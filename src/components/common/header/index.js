@@ -38,7 +38,7 @@ function Header() {
       <div
         className={`${
           isShowNavbar ? "left-0" : "left-full"
-        } p-4 fixed md:hidden w-full h-full bg-white left-0 top-0 overflow-hidden flex flex-col items-center gap-y-2.5 duration-500`}
+        } p-4 fixed md:hidden w-full h-screen bg-white left-0 top-0 overflow-hidden flex flex-col items-center gap-y-2.5 z-50 duration-500`}
       >
         <button onClick={onShowNavbarHandler} className="self-end mb-5">
           <XIcon className="w-7 h-7" />
