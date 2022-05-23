@@ -1,0 +1,37 @@
+
+ .banner_title{
+    text-align: center;
+    color: white;
+    font-size: 2.5rem;
+    margin-bottom: 1rem !important;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-top: 180px;
+
+}
+
+.banner_detail{
+    text-align: center;
+    color: white;
+   
+    margin-top: 0;
+    font-size: 18px;
+    margin-bottom: 50px;
+    
+}
+
+.BackgroundWave{
+    position: relative;
+    bottom: 5px;
+}
+
+
+@media screen and (max-width: 649px) {
+    .banner_title {
+      font-size: 2rem;
+    }
+    .banner_detail{
+        font-size: 14px;
+    }
+  }
+  
