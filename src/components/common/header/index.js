@@ -21,7 +21,7 @@ function Header() {
         alt="header logo"
       />
       <div className="hidden md:flex items-center">
-        <Link href={"/#"}>
+        <Link href={"/auth"}>
           <a className="px-7 py-2 bg-blue-900 rounded-md text-lg  text-white hover:bg-white hover:text-blue-800 border border-blue-800 duration-300 relative left-2 ">
             Sign In
           </a>
@@ -38,7 +38,7 @@ function Header() {
         <button onClick={onShowNavbarHandler} className="self-end mb-5">
           <XIcon className="w-7 h-7" />
         </button>
-        <Link href={"/#"}>
+        <Link href={"/auth"}>
           <a className="w-full sm:w-3/4 h-16 flex items-center justify-center bg-blue-900 rounded-2xl text-lg sm:text-xl  text-white hover:bg-white hover:text-blue-800 border border-blue-800 duration-300">
             Sign In
           </a>
