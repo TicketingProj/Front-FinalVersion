@@ -26,11 +26,6 @@ function Header() {
             Sign In
           </a>
         </Link>
-        <Link href={"/#"}>
-          <a className="px-7 py-2 bg-[#515BE0] rounded-md text-lg  text-white hover:bg-white hover:text-[#515BE0] duration-300 border border-[#515BE0]">
-            Sign Up
-          </a>
-        </Link>
       </div>
       <button onClick={onShowNavbarHandler} className="block md:hidden">
         <MenuIcon className="w-7 h-7" />
@@ -48,11 +43,7 @@ function Header() {
             Sign In
           </a>
         </Link>
-        <Link href={"/#"}>
-          <a className="w-full sm:w-3/4 h-16 flex items-center justify-center bg-[#515BE0] rounded-2xl text-lg sm:text-xl  text-white hover:bg-white hover:text-[#515BE0] duration-300 border border-[#515BE0]">
-            Sign Up
-          </a>
-        </Link>
+
         <img
           className="mt-8 w-60 h-10"
           src={HeaderLogo.src}
