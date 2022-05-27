@@ -1,3 +1,7 @@
+.bgShadowtext{
+    box-shadow: 1px 6px 12px rgb(24 25 30 / 6%);
+}
+
 .mybutton {
     background-color: #515BE0;
     border: 1px solid #515BE0;

@@ -2,7 +2,9 @@ import Style from "./detail.module.css";
 
 function Detail() {
   return (
-    <div className="text-center py-14 rounded-md  relative z-50 top-14 px-5 mx-2.5 sm:w-10/12 bg-white drop-shadow-xl sm:mx-auto">
+    <div
+      className={`${Style.bgShadowtext} text-center py-14 rounded-md  relative z-50 top-14 px-5 mx-2.5 sm:w-10/12 bg-white sm:mx-auto`}
+    >
       <h2 className="text-2xl sm:text-3xl font-semibold mb-3">
         Still no luck? We can help
       </h2>
