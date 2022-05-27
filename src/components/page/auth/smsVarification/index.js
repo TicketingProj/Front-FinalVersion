@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-function SmsVarification() {
+function SmsVarification({ onGoToGetPhoneNumberHandler }) {
   const router = useRouter();
   const inputRef = useRef();
   const [timer, setTimer] = useState(120);
@@ -22,7 +22,7 @@ function SmsVarification() {
         clearTimeout(timerHandler);
       };
     } else {
-      router.replace("/", {}, {});
+      onGoToGetPhoneNumberHandler(false);
     }
   }, [timer]);
 
@@ -59,9 +59,9 @@ function SmsVarification() {
   };
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <div className="w-screen h-screen flex items-center justify-center">
       <div className="w-fit flex flex-col items-center justify-center gap-y-5">
-        <div className="relative right-10">
+        <div className="self-start">
           <h1 className="text-3xl font-semibold">SMS sent !</h1>
           <span className="text-lg text-[#646464]">Enter the number sent</span>
         </div>
@@ -69,35 +69,45 @@ function SmsVarification() {
           <input
             value={dataSchema["num1"]}
             name="num1"
-            className="duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl"
+            className={`duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl ${
+              dataSchema.num1 ? "border-green-200" : ""
+            }`}
             type={"number"}
             onChange={schemaHandler}
           />
           <input
             value={dataSchema["num2"]}
             name="num2"
-            className="duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl"
+            className={`duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl ${
+              dataSchema.num2 ? "border-green-200" : ""
+            }`}
             type={"number"}
             onChange={schemaHandler}
           />
           <input
             value={dataSchema["num3"]}
             name="num3"
-            className="duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl"
+            className={`duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl ${
+              dataSchema.num3 ? "border-green-200" : ""
+            }`}
             type={"number"}
             onChange={schemaHandler}
           />
           <input
             value={dataSchema["num4"]}
             name="num4"
-            className="duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl"
+            className={`duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl ${
+              dataSchema.num4 ? "border-green-200" : ""
+            }`}
             type={"number"}
             onChange={schemaHandler}
           />
           <input
             value={dataSchema["num5"]}
             name="num5"
-            className="duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl"
+            className={`duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl ${
+              dataSchema.num5 ? "border-green-200" : ""
+            }`}
             type={"number"}
             onChange={schemaHandler}
           />
