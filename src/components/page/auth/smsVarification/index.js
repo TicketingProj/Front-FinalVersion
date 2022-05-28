@@ -22,7 +22,7 @@ function SmsVarification({ onGoToGetPhoneNumberHandler }) {
         clearTimeout(timerHandler);
       };
     } else {
-      onGoToGetPhoneNumberHandler(false);
+      onGoToGetPhoneNumberHandler("getPhoneNumber");
     }
   }, [timer]);
 
@@ -59,7 +59,7 @@ function SmsVarification({ onGoToGetPhoneNumberHandler }) {
   };
 
   return (
-    <div className="w-screen h-screen flex items-center justify-center">
+    <div>
       <div className="w-fit flex flex-col items-center justify-center gap-y-5">
         <div className="self-start">
           <h1 className="text-3xl font-semibold">SMS sent !</h1>

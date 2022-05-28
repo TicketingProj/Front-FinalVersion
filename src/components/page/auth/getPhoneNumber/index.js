@@ -22,22 +22,22 @@ function GetPhoneNumber({ getCodeHandler }) {
       //clear error
       setError();
 
-      getCodeHandler(true);
+      getCodeHandler("getSmsCode");
     }
   };
 
   console.log("phone number : ", phoneNumber);
 
   return (
-    <div className="w-screen h-screen flex items-center justify-center">
+    <div>
       <div className="w-fit flex flex-col items-center justify-center gap-y-5">
         <div className="self-start">
           <h1 className="text-3xl font-semibold">welcom!</h1>
           <p className="text-[#646464] text-lg">Login to your account </p>
         </div>
-        <div className="flex flex-col items-center   justify-center">
+        <div className="flex flex-col items-center justify-center">
           <div className="flex items-center justify-center h-12 ">
-            <div className="flex items-center justify-center gap-x-1 border-2 rounded-md px-1 h-full">
+            <div className="flex items-center justify-center gap-x-1 border-2 rounded-md px-1.5 h-12">
               <span className="text-sm font-semibold">+98</span>
               <img className="h-9 " src={IranIcon.src} />
             </div>
