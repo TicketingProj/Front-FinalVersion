@@ -1,12 +1,26 @@
-import react, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+//services
+// import { PostPhoneNumber } from "../../../../services/account";
 //pic
 import IranIcon from "./../../../../../public/assets/img/icons8-iran-48 (1).png";
 //style
 import Style from "./getPhoneNumber.module.css";
 
-function GetPhoneNumber({ getCodeHandler }) {
+function GetPhoneNumber({ onVarificationHandler }) {
+  const router = useRouter();
   const [phoneNumber, setPhoneNumber] = useState();
   const [error, setError] = useState();
+
+  useEffect(() => {
+    postPhoneNumberhandler();
+  }, []);
+
+  const postPhoneNumberhandler = async () => {
+    // const tempNumber = "09901660268";
+    // const response = await PostPhoneNumber(router, tempNumber);
+    // console.log(response);
+  };
 
   const phoneNumberHandler = (e) => {
     if (e.target.value.length < 11) {
@@ -22,11 +36,9 @@ function GetPhoneNumber({ getCodeHandler }) {
       //clear error
       setError();
 
-      getCodeHandler("getSmsCode");
+      onVarificationHandler("getSmsCode");
     }
   };
-
-  console.log("phone number : ", phoneNumber);
 
   return (
     <div>
@@ -61,7 +73,7 @@ function GetPhoneNumber({ getCodeHandler }) {
             type="submit"
             className={Style.button}
           >
-            get code
+            Send Code
           </button>
         </div>
       </div>

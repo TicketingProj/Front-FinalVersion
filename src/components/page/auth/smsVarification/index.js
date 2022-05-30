@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useRouter } from "next/router";
-function SmsVarification({ onGoToGetPhoneNumberHandler }) {
-  const router = useRouter();
+
+function SmsVarification({ onVarificationHandler }) {
   const inputRef = useRef();
   const [timer, setTimer] = useState(120);
 
@@ -22,7 +21,7 @@ function SmsVarification({ onGoToGetPhoneNumberHandler }) {
         clearTimeout(timerHandler);
       };
     } else {
-      onGoToGetPhoneNumberHandler("getPhoneNumber");
+      onGetPhoneNumberHandler();
     }
   }, [timer]);
 
@@ -58,6 +57,14 @@ function SmsVarification({ onGoToGetPhoneNumberHandler }) {
     }
   };
 
+  const onGetPhoneNumberHandler = () => {
+    onVarificationHandler("getPhoneNumber");
+  };
+
+  const onSubmitDataHandler = () => {
+    onVarificationHandler("registerUser");
+  };
+
   return (
     <div>
       <div className="w-fit flex flex-col items-center justify-center gap-y-5">
@@ -70,7 +77,7 @@ function SmsVarification({ onGoToGetPhoneNumberHandler }) {
             value={dataSchema["num1"]}
             name="num1"
             className={`duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl ${
-              dataSchema.num1 ? "border-green-200" : ""
+              dataSchema.num1 ? "!border-green-200" : ""
             }`}
             type={"number"}
             onChange={schemaHandler}
@@ -79,7 +86,7 @@ function SmsVarification({ onGoToGetPhoneNumberHandler }) {
             value={dataSchema["num2"]}
             name="num2"
             className={`duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl ${
-              dataSchema.num2 ? "border-green-200" : ""
+              dataSchema.num2 ? "!border-green-200" : ""
             }`}
             type={"number"}
             onChange={schemaHandler}
@@ -88,7 +95,7 @@ function SmsVarification({ onGoToGetPhoneNumberHandler }) {
             value={dataSchema["num3"]}
             name="num3"
             className={`duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl ${
-              dataSchema.num3 ? "border-green-200" : ""
+              dataSchema.num3 ? "!border-green-200" : ""
             }`}
             type={"number"}
             onChange={schemaHandler}
@@ -97,7 +104,7 @@ function SmsVarification({ onGoToGetPhoneNumberHandler }) {
             value={dataSchema["num4"]}
             name="num4"
             className={`duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl ${
-              dataSchema.num4 ? "border-green-200" : ""
+              dataSchema.num4 ? "!border-green-200" : ""
             }`}
             type={"number"}
             onChange={schemaHandler}
@@ -106,22 +113,33 @@ function SmsVarification({ onGoToGetPhoneNumberHandler }) {
             value={dataSchema["num5"]}
             name="num5"
             className={`duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl ${
-              dataSchema.num5 ? "border-green-200" : ""
+              dataSchema.num5 ? "!border-green-200" : ""
             }`}
             type={"number"}
             onChange={schemaHandler}
           />
         </div>
-        <button className="bg-[#515BE0] text-white hover:text-[#515BE0] hover:bg-white border border-[#515BE0] duration-200 px-14 py-2.5 rounded-lg">
-          Sign in
-        </button>
-        <div className="cursor-default text-sm">
-          <span>Expires on : </span>
-          <span className="text-[#515151] text-xs">
-            {`0${Math.floor(timer / 60)}:${
-              timer % 60 < 10 ? "0" : ""
-            }${Math.floor(timer % 60)}`}
-          </span>
+        <div className="flex flex-col justify-between items-center w-full">
+          <button
+            onClick={onSubmitDataHandler}
+            className="bg-[#515BE0] text-white hover:text-[#515BE0] hover:bg-white border border-[#515BE0] duration-200 w-full py-2.5 rounded-lg"
+          >
+            Sign in
+          </button>
+          <button
+            onClick={onGetPhoneNumberHandler}
+            className="text-sm text-gray-500 mt-2 self-end mb-3 hover:text-blue-900 duration-200"
+          >
+            wrong number ?
+          </button>
+          <div className="cursor-default text-sm">
+            <span className="font-semibold">expires on : </span>
+            <span className="text-[#515151] text-xs font-semibold">
+              {`0${Math.floor(timer / 60)}:${
+                timer % 60 < 10 ? "0" : ""
+              }${Math.floor(timer % 60)}`}
+            </span>
+          </div>
         </div>
       </div>
     </div>

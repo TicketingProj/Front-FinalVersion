@@ -1,0 +1,9 @@
+.label{
+    transition: all 0.25s ease;
+}
+
+.input:hover .label{
+    top: 0px;
+    left: 5px;
+}
+
