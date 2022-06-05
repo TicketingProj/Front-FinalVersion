@@ -1,18 +1,29 @@
-import useFetch from "./../hooks/useFetch";
+import axios from "axios";
+const BASE_URL = "http://optivas.ir/";
 
-export async function PostPhoneNumber(history, phone_number) {
-  // "accept: application/json" -H  "Content-Type: application/json" -H
-  const headers = {
-    "Content-Type": "application/json",
-    "X-CSRFToken":
-      "zvFNQ6ah25tXkUiv5mLGBF9jaM8U6KM4Ol2kvRvd26xNrhTlB77CBZe4sRr9eqi9",
-  };
-  const apiCall = useFetch(history).post(
-    "/account",
-    {
-      phoneNumber: phone_number,
-    },
-    { headers }
-  );
-  return apiCall;
+export async function PostPhoneNumber(phoneNumber) {
+  const response = await axios.post(`${BASE_URL}accounts/`, {
+    phoneNumber,
+  });
+
+  return response;
+}
+
+export async function SmsVarificationOtp({ phoneNumber, otp }) {
+  const response = await axios.post(`${BASE_URL}accounts/verify/`, {
+    phoneNumber,
+    otp,
+  });
+
+  return response;
+}
+
+export async function RegisterUser(id, { fullName, email, phoneNumber }) {
+  const response = await axios.patch(`${BASE_URL}/accounts/${id}/`, {
+    fullName,
+    email,
+    phoneNumber,
+  });
+
+  return response;
 }

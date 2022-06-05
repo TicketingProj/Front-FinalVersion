@@ -1,7 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
+import { toast } from "react-toastify";
+//services
+import { SmsVarificationOtp } from "../../../../services/account";
 
-function SmsVarification({ onVarificationHandler }) {
+function SmsVarification({ phoneNumber, onVarificationHandler }) {
   const inputRef = useRef();
+  const [error, setError] = useState(false);
   const [timer, setTimer] = useState(120);
 
   const [dataSchema, setDataSchema] = useState({
@@ -9,7 +13,6 @@ function SmsVarification({ onVarificationHandler }) {
     num2: "",
     num3: "",
     num4: "",
-    num5: "",
   });
 
   useEffect(() => {
@@ -62,7 +65,39 @@ function SmsVarification({ onVarificationHandler }) {
   };
 
   const onSubmitDataHandler = () => {
-    onVarificationHandler("registerUser");
+    if (
+      dataSchema.num1.length > 0 &&
+      dataSchema.num2.length > 0 &&
+      dataSchema.num3.length > 0 &&
+      dataSchema.num4.length > 0
+    ) {
+      smsVarificationHandler();
+    } else {
+      setError(true);
+      toast.error("please full inputs");
+    }
+  };
+
+  const smsVarificationHandler = async () => {
+    try {
+      const response = await SmsVarificationOtp({
+        phoneNumber: `0${phoneNumber}`,
+        otp: `${dataSchema.num1}${dataSchema.num2}${dataSchema.num3}${dataSchema.num4}`,
+      });
+      //check response status
+      if (response.status === 202) {
+        //currect otp
+        onVarificationHandler("registerUser", {
+          phoneNumber,
+          id: response.data.id,
+        });
+        toast.success("Sms varificate Successfully");
+      } else {
+        toast.error("check your otp code");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -78,6 +113,8 @@ function SmsVarification({ onVarificationHandler }) {
             name="num1"
             className={`duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl ${
               dataSchema.num1 ? "!border-green-200" : ""
+            } ${
+              error && dataSchema.num1.length === 0 ? "!border-red-200" : ""
             }`}
             type={"number"}
             onChange={schemaHandler}
@@ -87,6 +124,8 @@ function SmsVarification({ onVarificationHandler }) {
             name="num2"
             className={`duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl ${
               dataSchema.num2 ? "!border-green-200" : ""
+            } ${
+              error && dataSchema.num2.length === 0 ? "!border-red-200" : ""
             }`}
             type={"number"}
             onChange={schemaHandler}
@@ -96,6 +135,8 @@ function SmsVarification({ onVarificationHandler }) {
             name="num3"
             className={`duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl ${
               dataSchema.num3 ? "!border-green-200" : ""
+            } ${
+              error && dataSchema.num3.length === 0 ? "!border-red-200" : ""
             }`}
             type={"number"}
             onChange={schemaHandler}
@@ -105,15 +146,8 @@ function SmsVarification({ onVarificationHandler }) {
             name="num4"
             className={`duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl ${
               dataSchema.num4 ? "!border-green-200" : ""
-            }`}
-            type={"number"}
-            onChange={schemaHandler}
-          />
-          <input
-            value={dataSchema["num5"]}
-            name="num5"
-            className={`duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl ${
-              dataSchema.num5 ? "!border-green-200" : ""
+            } ${
+              error && dataSchema.num4.length === 0 ? "!border-red-200" : ""
             }`}
             type={"number"}
             onChange={schemaHandler}

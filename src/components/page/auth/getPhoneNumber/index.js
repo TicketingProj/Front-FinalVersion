@@ -1,26 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 //services
-// import { PostPhoneNumber } from "../../../../services/account";
+import { PostPhoneNumber } from "../../../../services/account";
 //pic
 import IranIcon from "./../../../../../public/assets/img/icons8-iran-48 (1).png";
 //style
 import Style from "./getPhoneNumber.module.css";
 
 function GetPhoneNumber({ onVarificationHandler }) {
-  const router = useRouter();
-  const [phoneNumber, setPhoneNumber] = useState();
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [isLoadingBtn, setIsLoadingBtn] = useState(false);
   const [error, setError] = useState();
-
-  useEffect(() => {
-    postPhoneNumberhandler();
-  }, []);
-
-  const postPhoneNumberhandler = async () => {
-    // const tempNumber = "09901660268";
-    // const response = await PostPhoneNumber(router, tempNumber);
-    // console.log(response);
-  };
 
   const phoneNumberHandler = (e) => {
     if (e.target.value.length < 11) {
@@ -31,13 +22,28 @@ function GetPhoneNumber({ onVarificationHandler }) {
   const onOpenVarificationHandler = () => {
     //check length of phone number
     if (phoneNumber.length < 10) {
-      setError("please enter your phone number correctly");
+      setError("please enter your phone number currectly");
     } else {
-      //clear error
-      setError();
-
-      onVarificationHandler("getSmsCode");
+      postPhoneNumberHandler();
     }
+  };
+
+  const postPhoneNumberHandler = async () => {
+    setIsLoadingBtn(true);
+    try {
+      const response = await PostPhoneNumber(`0${phoneNumber}`);
+      if (response.status === 200) {
+        //send phone number successfully
+        toast.success(response.data.message.message);
+        setError(null);
+        onVarificationHandler("getSmsCode", {
+          phoneNumber,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoadingBtn(false);
   };
 
   return (
@@ -68,13 +74,24 @@ function GetPhoneNumber({ onVarificationHandler }) {
               {error}
             </span>
           )}
-          <button
-            onClick={onOpenVarificationHandler}
-            type="submit"
-            className={Style.button}
-          >
-            Send Code
-          </button>
+          {!isLoadingBtn ? (
+            <button
+              onClick={onOpenVarificationHandler}
+              type="submit"
+              className={Style.button}
+            >
+              Send Code
+            </button>
+          ) : (
+            <div
+              className={`min-w-[200px] min-h-[50px] flex flex-row justify-center items-center bg-[#515BE0] rounded-[10px] mt-5`}
+            >
+              <div
+                style={{ borderTopColor: "transparent" }}
+                className="w-6 h-6 border-2 border-white border-solid rounded-full animate-spin"
+              ></div>
+            </div>
+          )}
         </div>
       </div>
     </div>

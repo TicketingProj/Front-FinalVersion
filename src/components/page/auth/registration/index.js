@@ -1,28 +1,33 @@
 import React, { useRef, useState } from "react";
-
+//service
+import { RegisterUser } from "../../../../services/account";
 //pic
 import DefaultUser from "./../../../../../public/assets/img/user.png";
 import IranIcon from "./../../../../../public/assets/img/icons8-iran-48 (1).png";
 import { toast } from "react-toastify";
 
-function Registration() {
+function Registration({ phoneNumber, id }) {
   const inputFile = useRef();
 
   const [dataSchema, setDataSchema] = useState({
     fullName: "",
     email: "",
-    phoneNumber: "",
+    phoneNumber: phoneNumber,
     Agreemet: false,
   });
 
   const [userProfiel, setUserProfile] = useState({ preview: "", raw: "" });
 
   const schemaHandler = (e) => {
+    console.log("e.target.name : ", e.target.name);
+    console.log(" e.target.value : ", e.target.value);
     setDataSchema({
       ...dataSchema,
       [e.target.name]: e.target.value,
     });
   };
+
+  console.log("dataSchema : ", dataSchema);
 
   const onUplaodFileHandler = (e) => {
     if (e.target.files.length && e.target.files[0].type.includes("image")) {
@@ -32,6 +37,29 @@ function Registration() {
       });
     } else {
       toast.error("please select image for your profile");
+    }
+  };
+
+  const onSubmitDataHandler = () => {
+    //check values
+    onPostDataHandler();
+  };
+
+  const onPostDataHandler = async () => {
+    try {
+      const { fullName, email, phoneNumber } = dataSchema;
+      console.log(
+        "fullname : ",
+        fullName,
+        "email : ",
+        email,
+        "phoneNumber : ",
+        phoneNumber
+      );
+      const response = await RegisterUser(id, { fullName, email, phoneNumber });
+      console.log("this is response ", response);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -75,6 +103,9 @@ function Registration() {
         <div className="relative flex flex-col w-full">
           <label className="text-sm text-gray-500">full name</label>
           <input
+            name="fullName"
+            onChange={schemaHandler}
+            value={dataSchema.fullName}
             className="border-2 border-gray-200 rounded-md outline-none px-2 py-1"
             type={"text"}
           />
@@ -82,6 +113,9 @@ function Registration() {
         <div className="relative flex flex-col w-full">
           <label className="text-sm text-gray-500">email</label>
           <input
+            name="email"
+            onChange={schemaHandler}
+            value={dataSchema.email}
             className="border-2 border-gray-200 rounded-md outline-none px-2 py-1"
             type={"email"}
           />
@@ -94,11 +128,9 @@ function Registration() {
               <img className="h-9 " src={IranIcon.src} />
             </div>
             <input
-              className={`border-2 border-gray-200 rounded-md outline-none w-full px-2 `}
+              className={`border-2 border-gray-200 rounded-md outline-none w-full px-2 text-gray-500`}
               disabled
-              type="number  "
-              placeholder="phone number"
-              onChange={schemaHandler}
+              type="number"
               value={dataSchema.phoneNumber}
             />
           </div>
@@ -113,7 +145,10 @@ function Registration() {
             type={"checkbox"}
           />
         </div>
-        <button className="duration-200 bg-[#515BE0] text-white border border-[#515BE0] hover:text-[#515BE0] hover:bg-white font-medium px-12 py-2.5 rounded-md mt-2">
+        <button
+          onClick={onSubmitDataHandler}
+          className="duration-200 bg-[#515BE0] text-white border border-[#515BE0] hover:text-[#515BE0] hover:bg-white font-medium px-12 py-2.5 rounded-md mt-2"
+        >
           Continue
         </button>
       </div>

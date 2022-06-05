@@ -11,38 +11,20 @@ import SiteLogo from "./../../../public/assets/img/dark-logo.png";
 //style
 import "react-toastify/dist/ReactToastify.css";
 
-const accessToken =
-  "zvFNQ6ah25tXkUiv5mLGBF9jaM8U6KM4Ol2kvRvd26xNrhTlB77CBZe4sRr9eqi9";
-
-const urlAPI = "http://optivas.ir/accounts/";
-
-axios.interceptors.request.use(
-  (config) => {
-    config.headers.authorization = `Beare ${accessToken}`;
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
 function Auth() {
   const [varificateStatus, setVarificationStatus] = useState("getPhoneNumber");
+  const [userData, setUserData] = useState({});
 
-  useEffect(() => {
-    postPhoneNumber();
-  }, []);
-
-  const postPhoneNumber = async () => {
-    const resualt = await axios.post(`${urlAPI}`, {
-      phoneNumber: "09925414279",
+  const onVarificationHandler = (status, { phoneNumber, id }) => {
+    console.log("come here :  ", "id : ", id, "phoneNumber : ", phoneNumber);
+    setUserData({
+      phoneNumber,
+      id,
     });
-    console.log(resualt);
-  };
-
-  const onVarificationHandler = (status) => {
     setVarificationStatus(status);
   };
+
+  console.log("userData : ", userData);
 
   return (
     <>
@@ -58,9 +40,12 @@ function Auth() {
         {varificateStatus === "getPhoneNumber" ? (
           <GetPhoneNumber onVarificationHandler={onVarificationHandler} />
         ) : varificateStatus === "getSmsCode" ? (
-          <SmsVarification onVarificationHandler={onVarificationHandler} />
+          <SmsVarification
+            phoneNumber={userData.phoneNumber}
+            onVarificationHandler={onVarificationHandler}
+          />
         ) : (
-          <Registration />
+          <Registration id={userData.id} phoneNumber={userData.phoneNumber} />
         )}
         <div className="w-full bg-[#F3F3F3] px-5 py-4 border-t text-gray-500 text-sm">
           <span> © 2022 Fowtickets - All rights reserved</span>
