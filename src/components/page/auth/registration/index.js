@@ -19,15 +19,11 @@ function Registration({ phoneNumber, id }) {
   const [userProfiel, setUserProfile] = useState({ preview: "", raw: "" });
 
   const schemaHandler = (e) => {
-    console.log("e.target.name : ", e.target.name);
-    console.log(" e.target.value : ", e.target.value);
     setDataSchema({
       ...dataSchema,
       [e.target.name]: e.target.value,
     });
   };
-
-  console.log("dataSchema : ", dataSchema);
 
   const onUplaodFileHandler = (e) => {
     if (e.target.files.length && e.target.files[0].type.includes("image")) {
