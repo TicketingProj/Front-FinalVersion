@@ -1,3 +1,6 @@
+import Link from "next/link";
+
+//style
 import Style from "./detail.module.css";
 
 function Detail() {
@@ -12,12 +15,11 @@ function Detail() {
         <span>Contact us and we will get back to you</span>
         <span> as soon as possible</span>
       </div>
-      <a
-        href="#"
-        class={`${Style.mybutton} ${Style.green} text-sm sm:text-base`}
-      >
-        Open a Ticket
-      </a>
+      <Link href={"/auth"}>
+        <a class={`${Style.mybutton} ${Style.green} text-sm sm:text-base`}>
+          Open a Ticket
+        </a>
+      </Link>
     </div>
   );
 }

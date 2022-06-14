@@ -1,3 +1,7 @@
+import React from "react";
+import Link from "next/link";
+
+//style
 import Style from "./banner.module.css";
 
 function Banner() {
@@ -10,9 +14,11 @@ function Banner() {
           something related <br /> to your problem you can get in touch with us{" "}
         </p>
 
-        <button className="px-10 sm:px-16 py-3 sm:py-4 bg-blue-900  text-white rounded-md text-base sm:text-xl sm:font-semibold hover:bg-blue-800 duration-200">
-          Get Start
-        </button>
+        <Link href={"/auth"}>
+          <a className="px-10 sm:px-16 py-3 sm:py-4 bg-blue-900  text-white rounded-md text-base sm:text-xl sm:font-semibold hover:bg-blue-800 duration-200">
+            Get Start
+          </a>
+        </Link>
       </div>
 
       <svg
