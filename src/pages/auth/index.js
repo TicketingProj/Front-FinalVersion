@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import Link from "next/dist/client/link";
 import { ToastContainer } from "react-toastify";
 //component
@@ -16,15 +15,12 @@ function Auth() {
   const [userData, setUserData] = useState({});
 
   const onVarificationHandler = (status, { phoneNumber, id }) => {
-    console.log("come here :  ", "id : ", id, "phoneNumber : ", phoneNumber);
     setUserData({
       phoneNumber,
       id,
     });
     setVarificationStatus(status);
   };
-
-  console.log("userData : ", userData);
 
   return (
     <>

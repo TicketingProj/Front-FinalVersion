@@ -36,9 +36,7 @@ function GetPhoneNumber({ onVarificationHandler }) {
         //send phone number successfully
         toast.success(response.data.message.message);
         setError(null);
-        onVarificationHandler("getSmsCode", {
-          phoneNumber,
-        });
+        console.log("response  : ", response);
       }
     } catch (error) {
       console.log(error);
