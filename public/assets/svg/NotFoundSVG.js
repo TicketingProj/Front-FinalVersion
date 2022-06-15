@@ -17,7 +17,7 @@ function NotFoundSvg({ classname }) {
         rx="20"
         fill="#fff"
         stroke="#E1E4E5"
-        stroke-width="4"
+        strokeWidth="4"
       />
       <rect
         x="452.662"
@@ -36,17 +36,17 @@ function NotFoundSvg({ classname }) {
         fill="#E1E4E5"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M410.561 184.691c-12.617 0-22.846-10.374-22.846-23.168 0-12.795 10.229-23.169 22.846-23.169s22.847 10.374 22.847 23.169c0 12.794-10.23 23.168-22.847 23.168z"
         fill="#666AF6"
       />
       <path
         d="m418.606 157.662-9.651 10.297-5.794-6.177"
         stroke="#fff"
-        stroke-width="3.568"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="3.568"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <rect
         x="400.515"
@@ -56,7 +56,7 @@ function NotFoundSvg({ classname }) {
         rx="20"
         fill="#fff"
         stroke="#E1E4E5"
-        stroke-width="4"
+        strokeWidth="4"
       />
       <rect
         x="480.339"
@@ -75,17 +75,17 @@ function NotFoundSvg({ classname }) {
         fill="#E1E4E5"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M438.238 321.923c-12.617 0-22.846-10.374-22.846-23.168 0-12.795 10.229-23.169 22.846-23.169s22.847 10.374 22.847 23.169c0 12.794-10.23 23.168-22.847 23.168z"
         fill="#31446C"
       />
       <path
         d="m446.283 294.894-9.651 10.297-5.794-6.177"
         stroke="#fff"
-        stroke-width="3.568"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="3.568"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <rect
         x="372.838"
@@ -95,7 +95,7 @@ function NotFoundSvg({ classname }) {
         rx="20"
         fill="#fff"
         stroke="#E1E4E5"
-        stroke-width="4"
+        strokeWidth="4"
       />
       <rect
         x="452.662"
@@ -114,67 +114,67 @@ function NotFoundSvg({ classname }) {
         fill="#E1E4E5"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M410.561 459.155c-12.617 0-22.846-10.374-22.846-23.168 0-12.795 10.229-23.169 22.846-23.169s22.847 10.374 22.847 23.169c0 12.794-10.23 23.168-22.847 23.168z"
         fill="#666AF6"
       />
       <path
         d="m418.606 432.126-9.651 10.297-5.794-6.177"
         stroke="#fff"
-        stroke-width="3.568"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="3.568"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M255.487 201.898c-.582 2.328.191 4.749 1.464 6.782.9 1.436 2.159-.15 3.994-.404 2.839-.398 4.636-3.403 5.25-10.723.285-5.347.151-8.015-.147-8.482-1.06-1.671-3.788-2.23-5.938-2.069"
         fill="#31446C"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M260.641 520.083s-.173 10.993 6.613 14.898c6.785 3.906 17.298 11.162 17.298 11.162l-39.992 1.348 1.14-27.507 14.941.099z"
         fill="#F8AE9D"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="m243.165 532.197-.651 17.835h9.289l.637-2.298s3.497-.142 5.518.85c2.136 1.05 2.423 1.559 2.423 1.559l29.464.061s1.453-5.764-7.528-9.933c-8.981-4.171-15.521-10.089-16.763-10.695-1.251-.61-3.776-.955-5.554.479-1.777 1.433-3.184 5.202-7.212 5.32-5.185.152-8.163-6.194-9.623-3.178zM231.68 340.659s10.915 92.618 11.255 99.056c.339 6.438-3.506 17.549-3.431 29.592.075 12.044 1.404 54.489 1.404 54.489l24.078.392s10.12-76.701 10.229-88.203c.108-11.502 1.036-94.219 1.036-94.219l-44.571-1.107z"
         fill="#31446C"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="m202.232 518.15-4.692 28.497 17.298-.087.547-28.857-13.153.447z"
         fill="#F8AE9D"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M199.776 530.605a3 3 0 0 0-2.361 2.833l-.16 4.852c-2.467 2.743-3.622 10.707-3.728 11.473a.592.592 0 0 0-.006.126c.286 3.888 25.775 3.825 27.921.144.078-.134.083-.29.058-.444-.239-1.467-1.645-9.408-4.383-11.555l-.018-4.802a3 3 0 0 0-2.22-2.886l-3.178-.854c-2.528-3.698-5.975-3.567-8.928.462l-2.997.651zm10.949-189.074s-7.709 63.19-7.604 75.291c.104 12.102 2.372 17.416-.855 26.097-3.228 8.681-5.981 77.97-5.981 77.97l23.868 1.988s15.247-74.143 16.905-84.423c1.659-10.28 22.151-97.795 22.151-97.795l-48.484.872z"
         fill="#31446C"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M329.738 227.916s-1.993-11.105-1.276-13.354c.612-1.944 6.397-4.746 6.397-4.746s10.061-15.894 12.263-14.276c1.791 1.312-5.24 13.03-5.24 13.03s6.412 6.726 6.322 9.733c-.09 3.007-10.464 12.42-10.464 12.42l-8.002-2.807zm-103.408 2.609s6.626-1.555 6.856-12.413c.23-10.857.068-14.563.068-14.563l15.71-.264s.158 12.101.161 16.477c.006 9.529 7.083 12.103 7.083 12.103s-.589 10.419-13.814 11.163c-10.326.581-16.064-12.503-16.064-12.503z"
         fill="#F8AE9D"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M231.812 198.06c-6.512-.252-5.45 9.28 1.314 9.267 0 0 7.269 14.616 18.682 14.654 5.497.019 7.292-4.878 8.94-8.316 1.648-3.437 2.857-8.579 2.958-11.727.108-3.357.122-14.385.122-14.385l-32.27-.014.254 10.521z"
         fill="#F8AE9D"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M256.455 231.219s16.923 5.283 21.002 11.593c13.137 11.542 29.569 27.392 29.569 27.392s15.649-39.276 20.765-43.754c3.5-3.064 10.474.725 11.774 4.618 1.669 5.001-9.049 34.334-14.111 48.187-.981 2.684-1.749 4.787-2.174 6.02-3.087 8.955-10.597 14.091-19.737 8.399-3.684-2.294-14.647-9.812-24.001-16.628-.146 7.16-.393 14.705-.627 21.871v.001c-.568 17.409-1.064 32.58.127 34.551 5.899 9.771-1.945 16.479-27.915 18.943-25.969 2.465-49.009.446-44.828-12.593.871-2.718.86-8.566.426-16.163a305.858 305.858 0 0 1-7.627-.503c-10.838-.854-18.854-5.511-19.972-17.606-.783-8.47 15.353-48.233 21.404-61.307 1.415-3.059 3.603-4.964 6.083-5.913.577-.644 1.227-1.097 1.957-1.338 4.445-1.465 20.381-8.16 20.381-8.16l18.957 12.403 8.547-10.013zm-51.486 69.994-.043.11.053.007-.01-.117z"
         fill="#666AF6"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M247.032 311.707s5.782-1.163 8.149-3.02c2.365-1.858 9.532-3.171 9.532-3.171l-2.293 4.828s17.564-1.649 17.98.084c.417 1.732-4.664 3.616-4.664 3.616s-2.505 4.68-4.93 7.392c-2.295 2.567-13.695 2.261-17.692.659-3.453-1.383-7.208-.691-7.208-.691l1.126-9.697z"
         fill="#F8AE9D"
       />
@@ -267,8 +267,8 @@ function NotFoundSvg({ classname }) {
           y2="101.799"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#fff" />
-          <stop offset="1" stop-color="#EEE" />
+          <stop stopColor="#fff" />
+          <stop offset="1" stopColor="#EEE" />
         </linearGradient>
         <linearGradient
           id="b"
@@ -278,8 +278,8 @@ function NotFoundSvg({ classname }) {
           y2="394.209"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#fff" />
-          <stop offset="1" stop-color="#EEE" />
+          <stop stopColor="#fff" />
+          <stop offset="1" stopColor="#EEE" />
         </linearGradient>
         <linearGradient
           id="c"
@@ -289,8 +289,8 @@ function NotFoundSvg({ classname }) {
           y2="116.532"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#fff" />
-          <stop offset="1" stop-color="#EEE" />
+          <stop stopColor="#fff" />
+          <stop offset="1" stopColor="#EEE" />
         </linearGradient>
       </defs>
     </svg>
