@@ -1,11 +1,56 @@
+//component
+import EmptyList from "./emptyList";
+import TicketStatus from "./ticketStatus";
 //SVG
 import { PlusIcon } from "@heroicons/react/solid";
-import { MailOpenIcon } from "@heroicons/react/solid";
-import { ChatIcon } from "@heroicons/react/solid";
-import { ReplyIcon } from "@heroicons/react/solid";
-import { XIcon } from "@heroicons/react/solid";
-import NotFoundSvg from "../../../../../public/assets/svg/NotFoundSVG";
-
+/*
+<div className="overflow-auto">
+        <table class="min-w-[800px] w-full shadow-md mt-5 rounded-md bg-white">
+          <thead className="w-full border-b">
+            <tr className="grid grid-cols-12 min-w-full">
+              <th className="my-3 col-span-2 text-center">Ticket Number</th>
+              <th className="my-3 col-span-2 text-center">Subject</th>
+              <th className="my-3 col-span-2 text-center">Priority</th>
+              <th className="my-3 col-span-2 text-center">Status</th>
+              <th className="my-3 col-span-2 text-center">Opened Date</th>
+              <th className="my-3 col-span-2 text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody className="flex flex-col">
+            <tr className="grid grid-cols-12 min-w-full">
+              <td className="mx-1.5 my-3 col-span-2 text-center">
+                Witchy Woman
+              </td>
+              <td className="mx-1.5 my-3 col-span-2 text-center">The Eagles</td>
+              <td className="mx-1.5 my-3 col-span-2 text-center">1972</td>
+              <td className="mx-1.5 my-3 col-span-2 text-center">1972</td>
+              <td className="mx-1.5 my-3 col-span-2 text-center">1972</td>
+              <td className="mx-1.5 my-3 col-span-2 text-center">1972</td>
+            </tr>
+            <tr className="grid grid-cols-12 min-w-full">
+              <td className="mx-1.5 my-3 col-span-2 text-center">
+                Witchy Woman
+              </td>
+              <td className="mx-1.5 my-3 col-span-2 text-center">The Eagles</td>
+              <td className="mx-1.5 my-3 col-span-2 text-center">1972</td>
+              <td className="mx-1.5 my-3 col-span-2 text-center">1972</td>
+              <td className="mx-1.5 my-3 col-span-2 text-center">1972</td>
+              <td className="mx-1.5 my-3 col-span-2 text-center">1972</td>
+            </tr>
+            <tr className="grid grid-cols-12 min-w-full">
+              <td className="mx-1.5 my-3 col-span-2 text-center">
+                Witchy Woman
+              </td>
+              <td className="mx-1.5 my-3 col-span-2 text-center">The Eagles</td>
+              <td className="mx-1.5 my-3 col-span-2 text-center">1972</td>
+              <td className="mx-1.5 my-3 col-span-2 text-center">1972</td>
+              <td className="mx-1.5 my-3 col-span-2 text-center">1972</td>
+              <td className="mx-1.5 my-3 col-span-2 text-center">1972</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      */
 function Dashboard() {
   return (
     <div class=" p-5 bg-[#F5F7FA]">
@@ -35,44 +80,9 @@ function Dashboard() {
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-5 mt-5">
-        <div className="bg-blue-800 text-white flex items-center justify-between p-5 rounded-md">
-          <div className="flex flex-col">
-            <span className="text-2xl mb-2">Opened</span>
-            <span className="text-xl">0</span>
-          </div>
-          <MailOpenIcon className="w-16 opacity-25" />
-        </div>
-        <div className="bg-green-800 text-white flex items-center justify-between p-5 rounded-md">
-          <div className="flex flex-col">
-            <span className="text-2xl mb-2">Answered</span>
-            <span className="text-xl">0</span>
-          </div>
-          <ChatIcon className="w-16 opacity-25" />
-        </div>
-        <div className="bg-purple-600 text-white flex items-center justify-between p-5 rounded-md">
-          <div className="flex flex-col">
-            <span className="text-2xl mb-2">Replied</span>
-            <span className="text-xl">0</span>
-          </div>
-          <ReplyIcon className="w-16 opacity-25" />
-        </div>
-        <div className="bg-red-800 text-white flex items-center justify-between p-5 rounded-md">
-          <div className="flex flex-col">
-            <span className="text-2xl mb-2">Closed</span>
-            <span className="text-xl">0</span>
-          </div>
-          <XIcon className="w-16 opacity-25" />
-        </div>
-      </div>
+      <TicketStatus />
       <div className="shadow-md mt-5 rounded-md flex flex-col items-center px-5 py-16 bg-white">
-        <NotFoundSvg classname={`w-96 h-[300px]`} />
-        <span className="font-semibold text-xl mt-5">No Results Found</span>
-        <p className="text-center mt-2.5 text-sm text-gray-500">
-          It looks like this section is empty or your search did not return any
-          results, you can start creating a content or search using another
-          word.
-        </p>
+        <EmptyList />
       </div>
     </div>
   );

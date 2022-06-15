@@ -14,12 +14,8 @@ function Auth() {
   const [varificateStatus, setVarificationStatus] = useState("getPhoneNumber");
   const [userData, setUserData] = useState({});
 
-  const onVarificationHandler = (status, { phoneNumber, id }) => {
-    setUserData({
-      phoneNumber,
-      id,
-    });
-    setVarificationStatus(status);
+  const onVarificationHandler = (target) => {
+    setVarificationStatus(target);
   };
 
   return (
@@ -36,12 +32,9 @@ function Auth() {
         {varificateStatus === "getPhoneNumber" ? (
           <GetPhoneNumber onVarificationHandler={onVarificationHandler} />
         ) : varificateStatus === "getSmsCode" ? (
-          <SmsVarification
-            phoneNumber={userData.phoneNumber}
-            onVarificationHandler={onVarificationHandler}
-          />
+          <SmsVarification onVarificationHandler={onVarificationHandler} />
         ) : (
-          <Registration id={userData.id} phoneNumber={userData.phoneNumber} />
+          <Registration />
         )}
         <div className="w-full bg-[#F3F3F3] px-5 py-4 border-t text-gray-500 text-sm">
           <span> © 2022 Fowtickets - All rights reserved</span>

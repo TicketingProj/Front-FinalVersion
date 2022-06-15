@@ -3,25 +3,22 @@ import Header from "./header";
 import Navbar from "./navbar";
 function Layout({ children }) {
   const [isOpenNavber, setIsOpenNavber] = useState(false);
+
   const navbarHandler = () => {
-    console.log("come here");
     setIsOpenNavber((prevState) => !prevState);
   };
   return (
-    <div className="flex flex-col-reverse md:flex-row h-screen justify-end">
-      <div className="relative">
-        <div
-          className={`h-full absolute md:relative z-10 ${
-            isOpenNavber ? "w-full" : "w-0 md:w-full"
-          } overflow-hidden duration-200`}
-        >
-          <Navbar navbarStatus={isOpenNavber} />
-        </div>
-        <div className="block md:hidden  overflow-y-auto">{children}</div>
+    <div className="grid grid-cols-12 min-h-screen">
+      <div
+        className={`col-span-3 md:static z-20 absolute ${
+          isOpenNavber ? "left-0 h-screen w-screen" : "-left-[100%]"
+        } duration-200`}
+      >
+        <Navbar navbarHandler={navbarHandler} />
       </div>
-      <div className="w-full flex flex-col">
+      <div className="col-span-12 md:col-span-9 flex flex-col">
         <Header navbarHandler={navbarHandler} />
-        <div className="md:block hidden overflow-y-auto h-full">{children}</div>
+        {children}
       </div>
     </div>
   );
