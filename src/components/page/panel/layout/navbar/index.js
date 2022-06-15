@@ -18,15 +18,15 @@ function Navbar({ navbarHandler }) {
   }, []);
 
   return (
-    <div class={`flex h-full w-full`}>
-      <div className="bg-[#212529] h-full flex flex-col md:w-[300px] w-[500px]">
+    <div className={`h-full w-full flex`}>
+      <div className="bg-[#212529] h-full lg:w-full w-[250px] sm:w-[300px] flex flex-col">
         <button
           onClick={navbarHandler}
-          className="p-1 border-2 rounded-lg w-fit border-white mt-3 ml-3"
+          className="block lg:hidden p-1 border-2 rounded-lg w-fit text-white duration-200 border-white mt-3 mr-3 ml-auto hover:bg-white hover:text-[#212529]"
         >
-          <XIcon className="w-5 text-white" />
+          <XIcon className="w-5" />
         </button>
-        <img class="px-6 py-5" src={FlowTicketImage.src} />
+        <img className="px-6 py-5" src={FlowTicketImage.src} />
         <div className="flex flex-col gap-y-10 h-full">
           <div className="flex flex-col">
             <button
@@ -54,7 +54,7 @@ function Navbar({ navbarHandler }) {
               <span className="">Setting</span>
             </button>
           </div>
-          <button class="bg-red-700 hover:bg-red-900 duration-200 text-white h-14 m-5 rounded-md flex items-center justify-center gap-x-2.5">
+          <button className="mt-auto bg-red-700 hover:bg-red-900 duration-200 text-white h-14 m-5 rounded-md flex items-center justify-center gap-x-2.5">
             <LogoutIcon className="w-6" />
             logout
           </button>
@@ -62,7 +62,7 @@ function Navbar({ navbarHandler }) {
       </div>
       <div
         onClick={navbarHandler}
-        className="bg-black bg-opacity-75 md:hidden block w-full"
+        className="flex-grow bg-black bg-opacity-75 lg:hidden block z-20"
       ></div>
     </div>
   );

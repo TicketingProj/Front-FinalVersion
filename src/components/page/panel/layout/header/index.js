@@ -15,13 +15,13 @@ function Header({ navbarHandler }) {
   const [isOpenSearchField, setIsOpenSearchFeild] = useState(false);
 
   return (
-    <div class="shadow-md w-full py-2.5 px-7">
+    <div className="shadow-lg w-full py-2.5 px-7">
       <div
-        className={`flex flex-col md:flex-row-reverse items-center justify-between gap-y-2.5 overflow-y-hidden duration-500 md:h-fit ${
+        className={`flex flex-col lg:flex-row-reverse items-center justify-between gap-y-2.5 overflow-y-hidden duration-500 lg:h-fit ${
           isOpenSearchField ? "h-[90px]" : "h-[45px]"
         }`}
       >
-        <div className="flex flex-row-reverse items-center justify-between gap-x-5 w-full md:w-fit">
+        <div className="flex flex-row-reverse items-center justify-between gap-x-5 w-full lg:w-fit">
           <div className="flex flex-row-reverse items-center gap-x-5">
             <button className="bg-gray-300 text-white rounded-full w-10 h-10">
               <img src={defaultImage.src} />
@@ -33,7 +33,7 @@ function Header({ navbarHandler }) {
               onClick={() => {
                 setIsOpenSearchFeild((prevState) => !prevState);
               }}
-              className="w-6  md:hidden block"
+              className="w-6  lg:hidden block"
             >
               <SearchIcon />
             </button>
@@ -41,19 +41,19 @@ function Header({ navbarHandler }) {
           <div className="flex items-center">
             <button
               onClick={navbarHandler}
-              className="w-8 md:hidden block mx-2"
+              className="w-8 lg:hidden block mx-2"
             >
               <MenuIcon />
             </button>
             <Link href={"/"}>
-              <a className="w-7 md:hidden">
+              <a className="w-7 lg:hidden">
                 <img src={FlowTicketIcon.src} />
               </a>
             </Link>
           </div>
         </div>
         <input
-          className="bg-[#f5f4f4] w-full md:w-3/4 py-1.5 px-2 rounded-md outline-none text-gray-600"
+          className="bg-[#f5f4f4] w-full lg:w-3/4 py-1.5 px-2 rounded-lg outline-none text-gray-600"
           placeholder="Type to search..."
         />
       </div>

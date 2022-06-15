@@ -16,7 +16,7 @@ function Detail() {
         <span> as soon as possible</span>
       </div>
       <Link href={"/auth"}>
-        <a class={`${Style.mybutton} ${Style.green} text-sm sm:text-base`}>
+        <a className={`${Style.mybutton} ${Style.green} text-sm sm:text-base`}>
           Open a Ticket
         </a>
       </Link>
