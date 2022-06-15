@@ -1,22 +1,46 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import Link from "next/dist/client/link";
+import { useRouter } from "next/router";
+//redux
+import { useDispatch, useSelector } from "react-redux";
 //service
-import { RegisterUser } from "../../../../services/account";
+import { GetSingleUser, RegisterUser } from "../../../../services/account";
 //pic
 import DefaultUser from "./../../../../../public/assets/img/user.png";
 import IranIcon from "./../../../../../public/assets/img/icons8-iran-48 (1).png";
-import { toast } from "react-toastify";
 
-function Registration({ phoneNumber, id }) {
+function Registration() {
+  const router = useRouter();
   const inputFile = useRef();
 
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state);
+
+  const [isLoadingBtn, setIsLoadingBtn] = useState(false);
   const [dataSchema, setDataSchema] = useState({
     fullName: "",
     email: "",
-    phoneNumber: phoneNumber,
+    phoneNumber: user.phoneNumber,
     Agreemet: false,
   });
 
-  const [userProfiel, setUserProfile] = useState({ preview: "", raw: "" });
+  const [userProfile, setUserProfile] = useState({ preview: "", raw: "" });
+
+  const [error, setError] = useState({});
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const getUser = async () => {
+    try {
+      const response = await GetSingleUser(user.id);
+      console.log("response : ", response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const schemaHandler = (e) => {
     setDataSchema({
@@ -38,26 +62,81 @@ function Registration({ phoneNumber, id }) {
 
   const onSubmitDataHandler = () => {
     //check values
-    onPostDataHandler();
+    let flagHaveError = false;
+
+    //claer errors list
+    setError({});
+
+    if (dataSchema.fullName.trim().length <= 0) {
+      setError((prevState) => ({
+        ...prevState,
+        fullName: "please enter fullname",
+      }));
+
+      flagHaveError = true;
+    }
+    if (
+      dataSchema.email.trim().length <= 0 ||
+      validateEmail(dataSchema.email) === null
+    ) {
+      if (validateEmail(dataSchema.email) === null) {
+        setError((prevState) => ({
+          ...prevState,
+          email: "please enter email correctly",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          email: "please enter email",
+        }));
+      }
+      flagHaveError = true;
+    }
+    if (dataSchema.Agreemet === false) {
+      setError((prevState) => ({
+        ...prevState,
+        Agreemet: "accept terms of services",
+      }));
+      flagHaveError = true;
+    }
+
+    if (!flagHaveError) {
+      onPostDataHandler();
+    }
+  };
+
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
   };
 
   const onPostDataHandler = async () => {
+    setIsLoadingBtn(true);
     try {
       const { fullName, email, phoneNumber } = dataSchema;
-      console.log(
-        "fullname : ",
+      const response = await RegisterUser({
+        avatar: userProfile.raw,
+        id: user.id,
         fullName,
-        "email : ",
         email,
-        "phoneNumber : ",
-        phoneNumber
-      );
-      const response = await RegisterUser(id, { fullName, email, phoneNumber });
-      console.log("this is response ", response);
+        phoneNumber: `0${phoneNumber}`,
+        token: user.token,
+      });
+      if (response.status === 200) {
+        toast.success("data add successfully");
+        router.push(`panel/dashboard?token=${user.token}`);
+      }
+      console.log("response  : ", response);
     } catch (error) {
       console.log(error);
     }
+    setIsLoadingBtn(false);
   };
+
+  console.log("error : ", error);
 
   return (
     <div className="w-fit flex flex-col items-center justify-center gap-y-5 my-5">
@@ -73,8 +152,8 @@ function Registration({ phoneNumber, id }) {
           <img
             className="w-full h-full object-cover"
             src={
-              userProfiel && userProfiel.preview
-                ? userProfiel.preview
+              userProfile && userProfile.preview
+                ? userProfile.preview
                 : DefaultUser.src
             }
           />
@@ -88,9 +167,14 @@ function Registration({ phoneNumber, id }) {
             ref={inputFile}
           />
         </div>
-        {userProfiel && userProfiel.preview && (
+        {userProfile && userProfile.preview && (
           <button
-            onClick={() => setUserProfile()}
+            onClick={() =>
+              setUserProfile({
+                raw: "",
+                preview: "",
+              })
+            }
             className="duration-200 bg-red-700 text-white border border-red-700 hover:bg-white hover:text-red-700 px-3 py-1 rounded-md"
           >
             remove profile
@@ -105,6 +189,9 @@ function Registration({ phoneNumber, id }) {
             className="border-2 border-gray-200 rounded-md outline-none px-2 py-1"
             type={"text"}
           />
+          {error.fullName && (
+            <span className="text-sm text-red-500">{error.fullName}</span>
+          )}
         </div>
         <div className="relative flex flex-col w-full">
           <label className="text-sm text-gray-500">email</label>
@@ -115,13 +202,16 @@ function Registration({ phoneNumber, id }) {
             className="border-2 border-gray-200 rounded-md outline-none px-2 py-1"
             type={"email"}
           />
+          {error.email && (
+            <span className="text-sm text-red-500">{error.email}</span>
+          )}
         </div>
         <div className="relative flex flex-col w-full">
           <label className="text-sm text-gray-500">phone number</label>
           <div className="flex gap-x-2">
             <div className="flex items-center justify-center gap-x-1 border-2 rounded-md px-3">
               <span className="text-sm font-semibold">+98</span>
-              <img className="h-9 " src={IranIcon.src} />
+              <img className="h-9" src={IranIcon.src} />
             </div>
             <input
               className={`border-2 border-gray-200 rounded-md outline-none w-full px-2 text-gray-500`}
@@ -131,22 +221,45 @@ function Registration({ phoneNumber, id }) {
             />
           </div>
         </div>
-        <div className="relative flex flex-row-reverse items-center justify-end gap-x-2 w-full">
-          <label className="text-sm text-gray-500">
-            I agree to the{" "}
-            <span className="text-blue-500">terms of service</span>
-          </label>
-          <input
-            className="border border-gray-200 rounded-md outline-none"
-            type={"checkbox"}
-          />
+        <div className="flex flex-col items-start w-full">
+          <div className="relative flex flex-row-reverse items-center justify-end gap-x-2 w-full">
+            <label className="text-sm text-gray-500">
+              I agree to the
+              <Link href={"/termsOfServices"}>
+                <a target="_blank" className="text-blue-500 mx-1">
+                  terms of service
+                </a>
+              </Link>
+            </label>
+            <input
+              name="Agreemet"
+              value={dataSchema.Agreemet}
+              onChange={schemaHandler}
+              className="border border-gray-200 rounded-md outline-none"
+              type={"checkbox"}
+            />
+          </div>
+          {error.Agreemet && (
+            <span className="text-sm text-red-500">{error.Agreemet}</span>
+          )}
         </div>
-        <button
-          onClick={onSubmitDataHandler}
-          className="duration-200 bg-[#515BE0] text-white border border-[#515BE0] hover:text-[#515BE0] hover:bg-white font-medium px-12 py-2.5 rounded-md mt-2"
-        >
-          Continue
-        </button>
+        {!isLoadingBtn ? (
+          <button
+            onClick={onSubmitDataHandler}
+            className="w-[150px] duration-200 bg-[#515BE0] text-white border border-[#515BE0] hover:text-[#515BE0] hover:bg-white font-medium py-2.5 rounded-md mt-2"
+          >
+            Continue
+          </button>
+        ) : (
+          <div
+            className={`w-[150px] py-2.5 rounded-md mt-2 flex flex-row justify-center items-center bg-[#515BE0]`}
+          >
+            <div
+              style={{ borderTopColor: "transparent" }}
+              className="w-6 h-6 border-2 border-white border-solid rounded-full animate-spin"
+            ></div>
+          </div>
+        )}
       </div>
     </div>
   );

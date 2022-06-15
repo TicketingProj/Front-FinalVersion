@@ -15,11 +15,15 @@ function Header() {
 
   return (
     <nav className="flex items-center justify-between px-7 sm:px-16 py-4 border-b">
-      <img
-        className="w-48 sm:w-60 h-10"
-        src={HeaderLogo.src}
-        alt="header logo"
-      />
+      <Link href={"/"}>
+        <a>
+          <img
+            className="w-48 sm:w-60 h-10"
+            src={HeaderLogo.src}
+            alt="header logo"
+          />
+        </a>
+      </Link>
       <div className="hidden md:flex items-center">
         <Link href={"/auth"}>
           <a className="px-7 py-2 bg-blue-900 rounded-md text-lg  text-white hover:bg-white hover:text-blue-800 border border-blue-800 duration-300 relative left-2 ">
