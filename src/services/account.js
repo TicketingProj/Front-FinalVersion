@@ -9,8 +9,12 @@ export async function PostPhoneNumber(phoneNumber) {
   return response;
 }
 
-export async function GetSingleUser(id) {
-  const response = await axios.get(`${BASE_URL}account/${id}`);
+export async function GetSingleUser(id, token) {
+  const response = await axios.get(`${BASE_URL}/accounts/${id}/`, {
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  });
   return response;
 }
 
@@ -31,26 +35,17 @@ export async function RegisterUser({
   phoneNumber,
   token,
 }) {
-  const data = {
-    fullName,
-    email,
-    phoneNumber,
-  };
-
-  if (avatar) {
-    console.log("come here");
-    data.avatar = avatar;
-  }
-
-  const response = await axios.patch(
-    `${BASE_URL}/accounts/${id}/`,
-    { ...data },
-    {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    }
-  );
+  const formData = new FormData();
+  console.log("avatar : ", avatar);
+  formData.append("fullName", fullName);
+  formData.append("email", email);
+  formData.append("phoneNumber", phoneNumber);
+  formData.append("avatar", avatar);
+  const response = await axios.patch(`${BASE_URL}/accounts/${id}/`, formData, {
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  });
 
   return response;
 }

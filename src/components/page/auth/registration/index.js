@@ -9,6 +9,7 @@ import { GetSingleUser, RegisterUser } from "../../../../services/account";
 //pic
 import DefaultUser from "./../../../../../public/assets/img/user.png";
 import IranIcon from "./../../../../../public/assets/img/icons8-iran-48 (1).png";
+import { addAllData } from "../../../../slice/user";
 
 function Registration() {
   const router = useRouter();
@@ -18,25 +19,34 @@ function Registration() {
   const { user } = useSelector((state) => state);
 
   const [isLoadingBtn, setIsLoadingBtn] = useState(false);
-  const [dataSchema, setDataSchema] = useState({
-    fullName: "",
-    email: "",
-    phoneNumber: user.phoneNumber,
-    Agreemet: false,
-  });
+  const [dataSchema, setDataSchema] = useState({ ...user, Agreemet: false });
 
   const [userProfile, setUserProfile] = useState({ preview: "", raw: "" });
 
   const [error, setError] = useState({});
 
   useEffect(() => {
+    //get data to check if login before
     getUser();
   }, []);
 
+  const setLocalStorage = () => {
+    localStorage.setItem("token", `${user.token}`);
+    localStorage.setItem("id", `${user.id}`);
+  };
+
   const getUser = async () => {
     try {
-      const response = await GetSingleUser(user.id);
-      console.log("response : ", response);
+      const response = await GetSingleUser(user.id, user.token);
+      if (response.status === 200) {
+        // check user have Register
+        if (response.data.fullName.trim().length > 0) {
+          // dispatch(addAllData({ ...response.data }));
+          // //set localStorage to login when user come to account
+          // setLocalStorage();
+          // router.push(`panel/dashboard?token=${user.token}&id=${user.id}`);
+        }
+      }
     } catch (error) {
       console.log(error);
     }
@@ -116,27 +126,27 @@ function Registration() {
   const onPostDataHandler = async () => {
     setIsLoadingBtn(true);
     try {
-      const { fullName, email, phoneNumber } = dataSchema;
+      const { fullName, email, phoneNumber, id, token } = dataSchema;
+
       const response = await RegisterUser({
         avatar: userProfile.raw,
-        id: user.id,
+        id,
         fullName,
         email,
         phoneNumber: `0${phoneNumber}`,
-        token: user.token,
+        token,
       });
       if (response.status === 200) {
         toast.success("data add successfully");
-        router.push(`panel/dashboard?token=${user.token}`);
+        setLocalStorage();
+        dispatch(addAllData({ ...dataSchema }));
+        router.push(`panel/dashboard?token=${user.token}&id=${user.id}`);
       }
-      console.log("response  : ", response);
     } catch (error) {
       console.log(error);
     }
     setIsLoadingBtn(false);
   };
-
-  console.log("error : ", error);
 
   return (
     <div className="w-fit flex flex-col items-center justify-center gap-y-5 my-5">
@@ -186,7 +196,9 @@ function Registration() {
             name="fullName"
             onChange={schemaHandler}
             value={dataSchema.fullName}
-            className="border-2 border-gray-200 rounded-md outline-none px-2 py-1"
+            className={`${
+              error.fullName ? "border-red-200" : ""
+            } border-2 border-gray-200 rounded-md outline-none px-2 py-1`}
             type={"text"}
           />
           {error.fullName && (
@@ -199,7 +211,9 @@ function Registration() {
             name="email"
             onChange={schemaHandler}
             value={dataSchema.email}
-            className="border-2 border-gray-200 rounded-md outline-none px-2 py-1"
+            className={`${
+              error.email ? "border-red-200" : ""
+            } border-2 border-gray-200 rounded-md outline-none px-2 py-1`}
             type={"email"}
           />
           {error.email && (
@@ -235,12 +249,12 @@ function Registration() {
               name="Agreemet"
               value={dataSchema.Agreemet}
               onChange={schemaHandler}
-              className="border border-gray-200 rounded-md outline-none"
+              className={`border-2 border-gray-200 rounded-md outline-none`}
               type={"checkbox"}
             />
           </div>
           {error.Agreemet && (
-            <span className="text-sm text-red-500">{error.Agreemet}</span>
+            <span className="text-xs text-red-500">{error.Agreemet}</span>
           )}
         </div>
         {!isLoadingBtn ? (

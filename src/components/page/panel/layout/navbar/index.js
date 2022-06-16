@@ -9,13 +9,15 @@ import { AdjustmentsIcon } from "@heroicons/react/outline";
 import { LogoutIcon } from "@heroicons/react/outline";
 import { XIcon } from "@heroicons/react/outline";
 
-function Navbar({ navbarHandler }) {
+function Navbar({ token, id, navbarHandler }) {
   const [route, setRoute] = useState("");
   const router = useRouter();
 
   useEffect(() => {
-    setRoute(router.asPath.split("/")[2]);
+    setRoute(router.asPath.split("/")[2].split("?")[0]);
   }, []);
+
+  console.log("token : ", token);
 
   return (
     <div className={`h-full w-full flex`}>
@@ -26,12 +28,16 @@ function Navbar({ navbarHandler }) {
         >
           <XIcon className="w-5" />
         </button>
-        <img className="px-6 py-5" src={FlowTicketImage.src} />
+        <Link href={"/"}>
+          <a>
+            <img className="px-6 py-5" src={FlowTicketImage.src} />
+          </a>
+        </Link>
         <div className="flex flex-col gap-y-10 h-full">
           <div className="flex flex-col">
             <button
               onClick={() => {
-                router.push("/panel/dashboard");
+                router.push(`/panel/dashboard?token=${token}&id=${id}`);
                 navbarHandler();
               }}
               className={`${
@@ -43,7 +49,7 @@ function Navbar({ navbarHandler }) {
             </button>
             <button
               onClick={() => {
-                router.push("/panel/setting");
+                router.push(`/panel/setting?token=${token}&id=${id}`);
                 navbarHandler();
               }}
               className={` ${

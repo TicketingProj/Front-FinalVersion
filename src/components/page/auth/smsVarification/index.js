@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SmsVarificationOtp } from "../../../../services/account";
 import { addOtp } from "../../../../slice/user";
 
-function SmsVarification({ phoneNumber, onVarificationHandler }) {
+function SmsVarification({ onVarificationHandler }) {
   const inputRef = useRef();
 
   const dispatch = useDispatch();
@@ -120,6 +120,7 @@ function SmsVarification({ phoneNumber, onVarificationHandler }) {
       </div>
       <div ref={inputRef} className="flex items-center gap-x-1">
         <input
+          autoFocus
           value={dataSchema["num1"]}
           name="num1"
           className={`duration-200 border-2 hover:border-blue-200 focus:border-blue-500 outline-none border-gray-200 rounded-lg w-12 h-12 text-center text-xl ${
@@ -174,7 +175,7 @@ function SmsVarification({ phoneNumber, onVarificationHandler }) {
             ></div>
           </div>
         )}
-        <div className="flex items-center gap-x-5">
+        <div className="flex items-center flex-row-reverse gap-x-5">
           <button
             onClick={onGetPhoneNumberHandler}
             className="after:block after:w-0 after:h-0.5 after:hover:w-full after:duration-200 after:rounded-full after:bg-blue-900 text-sm text-red-600 mt-2 self-end mb-2 "

@@ -53,7 +53,7 @@ function GetPhoneNumber({ onVarificationHandler }) {
   return (
     <div className="w-fit flex flex-col items-center justify-center gap-y-5 mx-2.5">
       <div className="self-start">
-        <h1 className="text-3xl font-semibold">welcom!</h1>
+        <h1 className="text-3xl font-semibold">welcome!</h1>
         <p className="text-[#646464] text-lg">Login to your account </p>
       </div>
       <div className="flex flex-col items-center justify-center">
@@ -63,6 +63,7 @@ function GetPhoneNumber({ onVarificationHandler }) {
             <img className="h-9 " src={IranIcon.src} />
           </div>
           <input
+            autoFocus
             className={`${Style.phoneNumber} h-full ${
               error ? "!border-red-600" : ""
             }`}

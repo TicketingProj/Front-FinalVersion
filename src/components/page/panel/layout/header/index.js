@@ -11,7 +11,7 @@ import { BellIcon } from "@heroicons/react/outline";
 import { MenuIcon } from "@heroicons/react/outline";
 import { SearchIcon } from "@heroicons/react/outline";
 
-function Header({ navbarHandler }) {
+function Header({ avatar, navbarHandler }) {
   const [isOpenSearchField, setIsOpenSearchFeild] = useState(false);
 
   return (
@@ -24,7 +24,10 @@ function Header({ navbarHandler }) {
         <div className="flex flex-row-reverse items-center justify-between gap-x-5 w-full lg:w-fit">
           <div className="flex flex-row-reverse items-center gap-x-5">
             <button className="bg-gray-300 text-white rounded-full w-10 h-10">
-              <img src={defaultImage.src} />
+              <img
+                className="w-full h-full object-cover rounded-full"
+                src={avatar ? avatar : defaultImage.src}
+              />
             </button>
             <button className="w-6">
               <BellIcon />
