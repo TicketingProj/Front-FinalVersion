@@ -36,12 +36,27 @@ export async function RegisterUser({
   token,
 }) {
   const formData = new FormData();
-  console.log("avatar : ", avatar);
   formData.append("fullName", fullName);
   formData.append("email", email);
   formData.append("phoneNumber", phoneNumber);
-  formData.append("avatar", avatar);
+
+  if (avatar === "empty") {
+    formData.append("avatar", "");
+  } else if (avatar) {
+    formData.append("avatar", avatar);
+  }
+
   const response = await axios.patch(`${BASE_URL}/accounts/${id}/`, formData, {
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  });
+
+  return response;
+}
+
+export async function DeleteAccount(id, token) {
+  const response = await axios.delete(`${BASE_URL}/accounts/${id}/`, {
     headers: {
       Authorization: `Token ${token}`,
     },
