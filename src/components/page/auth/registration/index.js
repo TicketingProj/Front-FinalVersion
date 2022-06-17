@@ -41,10 +41,10 @@ function Registration() {
       if (response.status === 200) {
         // check user have Register
         if (response.data.fullName.trim().length > 0) {
-          // dispatch(addAllData({ ...response.data }));
-          // //set localStorage to login when user come to account
-          // setLocalStorage();
-          // router.push(`panel/dashboard?token=${user.token}&id=${user.id}`);
+          dispatch(addAllData({ ...response.data }));
+          //set localStorage to login when user come to account
+          setLocalStorage();
+          router.push(`/panel/dashboard`);
         }
       }
     } catch (error) {
@@ -140,7 +140,7 @@ function Registration() {
         toast.success("data add successfully");
         setLocalStorage();
         dispatch(addAllData({ ...dataSchema }));
-        router.push(`panel/dashboard?token=${user.token}&id=${user.id}`);
+        router.push(`/panel/dashboard`);
       }
     } catch (error) {
       console.log(error);
