@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+//component
+import LogoutAccountModal from "../logoutAccountModal";
 //pic
 import FlowTicketImage from "./../../../../../../public/assets/img/light-logo.png";
 //SVG
@@ -9,15 +11,15 @@ import { AdjustmentsIcon } from "@heroicons/react/outline";
 import { LogoutIcon } from "@heroicons/react/outline";
 import { XIcon } from "@heroicons/react/outline";
 
-function Navbar({ token, id, navbarHandler }) {
+function Navbar({ navbarHandler }) {
+  const [isLogoutModalOpen, setISLogoutModalOpen] = useState(false);
+
   const [route, setRoute] = useState("");
   const router = useRouter();
 
   useEffect(() => {
-    setRoute(router.asPath.split("/")[2].split("?")[0]);
+    setRoute(router.asPath.split("/")[2]);
   }, []);
-
-  console.log("token : ", token);
 
   return (
     <div className={`h-full w-full flex`}>
@@ -37,7 +39,7 @@ function Navbar({ token, id, navbarHandler }) {
           <div className="flex flex-col">
             <button
               onClick={() => {
-                router.push(`/panel/dashboard?token=${token}&id=${id}`);
+                router.push(`/panel/dashboard`);
                 navbarHandler();
               }}
               className={`${
@@ -49,7 +51,7 @@ function Navbar({ token, id, navbarHandler }) {
             </button>
             <button
               onClick={() => {
-                router.push(`/panel/setting?token=${token}&id=${id}`);
+                router.push(`/panel/setting`);
                 navbarHandler();
               }}
               className={` ${
@@ -60,7 +62,10 @@ function Navbar({ token, id, navbarHandler }) {
               <span className="">Setting</span>
             </button>
           </div>
-          <button className="mt-auto bg-red-700 hover:bg-red-900 duration-200 text-white h-14 m-5 rounded-md flex items-center justify-center gap-x-2.5">
+          <button
+            onClick={() => setISLogoutModalOpen(true)}
+            className="mt-10 bg-red-700 hover:bg-red-900 duration-200 text-white h-14 m-5 rounded-md flex items-center justify-center gap-x-2.5"
+          >
             <LogoutIcon className="w-6" />
             logout
           </button>
@@ -70,6 +75,13 @@ function Navbar({ token, id, navbarHandler }) {
         onClick={navbarHandler}
         className="flex-grow bg-black bg-opacity-75 lg:hidden block z-20"
       ></div>
+      {isLogoutModalOpen && (
+        <LogoutAccountModal
+          modalHandler={() => {
+            setISLogoutModalOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 }
