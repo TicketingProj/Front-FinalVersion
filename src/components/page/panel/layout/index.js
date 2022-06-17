@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { ToastContainer } from "react-toastify";
 //services
 import { GetSingleUser } from "../../../../services/account";
 //redux
@@ -15,16 +16,13 @@ function Layout({ children }) {
   const { user } = useSelector((state) => state);
 
   const [isOpenNavber, setIsOpenNavber] = useState(false);
-
   useEffect(() => {
-    const { token, id } = router.query;
-    if (token === undefined || id === undefined) {
-      console.log("come here");
-      router.push("/");
+    if (localStorage.getItem("token") && localStorage.getItem("id")) {
+      getUser(localStorage.getItem("id"), localStorage.getItem("token"));
     } else {
-      getUser(id, token);
+      router.push("/");
     }
-  }, [user]);
+  }, []);
 
   const getUser = async (id, token) => {
     try {
@@ -43,8 +41,6 @@ function Layout({ children }) {
     setIsOpenNavber((prevState) => !prevState);
   };
 
-  console.log("user :", user);
-
   return (
     <div className="grid grid-cols-12 min-h-screen">
       <div
@@ -53,7 +49,7 @@ function Layout({ children }) {
         
       `}
       >
-        <Navbar id={user.id} token={user.token} navbarHandler={navbarHandler} />
+        <Navbar navbarHandler={navbarHandler} />
       </div>
       <div className="col-span-12 lg:col-span-9 xl:col-span-10 flex flex-col">
         <Header avatar={user.avatar} navbarHandler={navbarHandler} />

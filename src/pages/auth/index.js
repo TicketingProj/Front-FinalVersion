@@ -22,11 +22,7 @@ function Auth() {
   useEffect(() => {
     //check localStorage to go to Dashboard if have localStorage
     if (localStorage.getItem("token") !== null) {
-      router.push(
-        `panel/dashboard?token=${localStorage.getItem("token")}&id=${
-          localStorage.id
-        }`
-      );
+      router.push(`panel/dashboard`);
     }
   }, []);
 
