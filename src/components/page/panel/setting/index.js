@@ -1,22 +1,47 @@
-import React, { useState, useRef } from "react";
-
+import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/router";
+//component
+import DeleteAccountModal from "./deleteAccountModal";
+//services
+import { RegisterUser } from "../../../../services/account";
+//redux
+import { useSelector } from "react-redux";
 //pic
 import DefaultUser from "./../../../../../public/assets/img/user.png";
 import IranIcon from "./../../../../../public/assets/img/icons8-iran-48 (1).png";
-
 //SVG
 import { PencilAltIcon } from "@heroicons/react/solid";
 import { SaveIcon } from "@heroicons/react/solid";
+import { TrashIcon } from "@heroicons/react/solid";
+
 function Setting() {
+  const router = useRouter();
   const inputFile = useRef();
 
-  const [userProfiel, setUserProfile] = useState({ preview: "", raw: "" });
+  const { user } = useSelector((state) => state);
+
+  const [isDeleteAccountModal, setIsDeleteAccountModal] = useState(false);
+
+  const [isLoadingBtn, setIsLoadingBtn] = useState(false);
+  const [userProfile, setUserProfile] = useState({
+    preview: "",
+    raw: "",
+  });
   const [dataSchema, setDataSchema] = useState({
-    fullName: "",
-    email: "",
-    phoneNumber: "9901660268",
     Agreemet: false,
   });
+
+  useEffect(() => {
+    setDataSchema({
+      ...dataSchema,
+      ...user,
+      phoneNumber: user.phoneNumber.toString().substring(1),
+    });
+    setUserProfile({
+      ...userProfile,
+      preview: user.avatar && user.avatar,
+    });
+  }, [user]);
 
   const schemaHandler = (e) => {
     setDataSchema({
@@ -36,6 +61,35 @@ function Setting() {
     }
   };
 
+  const onSubmitFileHandler = async () => {
+    setIsLoadingBtn(true);
+    try {
+      const { fullName, email, phoneNumber, id, token } = dataSchema;
+
+      const response = await RegisterUser({
+        avatar: userProfile.raw
+          ? userProfile.raw
+          : userProfile.preview
+          ? ""
+          : "empty",
+        id,
+        fullName,
+        email,
+        phoneNumber: `0${phoneNumber}`,
+        token,
+      });
+      if (response.status === 200) {
+        // toast.success("data add successfully");
+        // setLocalStorage();
+        // dispatch(addAllData({ ...dataSchema }));
+        router.reload();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoadingBtn(false);
+  };
+
   return (
     <div className="p-8 bg-[#F5F7FA] flex flex-col h-full">
       <div>
@@ -53,8 +107,8 @@ function Setting() {
             <img
               className="w-full h-full object-cover"
               src={
-                userProfiel && userProfiel.preview
-                  ? userProfiel.preview
+                userProfile && userProfile.preview
+                  ? userProfile.preview
                   : DefaultUser.src
               }
             />
@@ -68,19 +122,32 @@ function Setting() {
               ref={inputFile}
             />
           </div>
-          <span className="mt-2.5 text-lg font-medium">full name</span>
+          {userProfile.preview && (
+            <button
+              onClick={() =>
+                setUserProfile({
+                  raw: "",
+                  preview: "",
+                })
+              }
+              className="mt-5 duration-200 bg-red-700 text-white border border-red-700 hover:bg-white hover:text-red-700 px-3 py-1 rounded-md"
+            >
+              remove profile
+            </button>
+          )}
+          <span className="mt-2.5 text-lg font-medium">{user.fullName}</span>
           <div className="flex items-center gap-x-2 mt-8 p-4 w-full rounded-md text-gray-500 bg-gray-200">
             <PencilAltIcon className=" w-5 h-5" />
             <span>Account Detail</span>
           </div>
         </div>
         <div className="col-span-9 shadow-md mt-5 rounded-md flex flex-col items-center bg-white">
-          <div className="w-full border-b px-6 py-4">
+          <div className="w-full border-b px-3 sm:px-6 py-4">
             <span className="text-xl font-semibold text-gray-600">
               Account Detail
             </span>
           </div>
-          <div className="px-6 py-4 w-full flex flex-col gap-y-4 h-full">
+          <div className="px-3 sm:px-6 py-4 w-full flex flex-col gap-y-4 h-full">
             <div className="flex flex-col sm:flex-row gap-y-5 items-center gap-x-2">
               <div className="flex flex-col w-full">
                 <label className=" text-gray-500">Fullname</label>
@@ -118,12 +185,39 @@ function Setting() {
                 />
               </div>
             </div>
-            <button className="mt-16 ml-auto py-2 px-3 hover:bg-blue-900 duration-200 bg-blue-700 rounded-md flex items-center gap-x-2 text-white">
-              <SaveIcon className="w-5" /> Save Changes
-            </button>
+            <div className="w-full flex items-center flex-row-reverse justify-between mt-10">
+              {isLoadingBtn ? (
+                <div
+                  className={`w-[150px] py-2.5 rounded-md flex flex-row justify-center items-center bg-[#515BE0]`}
+                >
+                  <div
+                    style={{ borderTopColor: "transparent" }}
+                    className="w-6 h-6 border-2 border-white border-solid rounded-full animate-spin"
+                  ></div>
+                </div>
+              ) : (
+                <button
+                  onClick={onSubmitFileHandler}
+                  className="py-2 px-3 hover:bg-blue-900 duration-200 bg-blue-700 rounded-md flex items-center gap-x-2 text-white"
+                >
+                  <SaveIcon className="w-5" /> Save Changes
+                </button>
+              )}
+              <button
+                onClick={() => setIsDeleteAccountModal(true)}
+                className="py-2 px-3 hover:bg-red-900 duration-200 bg-red-700 rounded-md flex items-center gap-x-2 text-white"
+              >
+                <TrashIcon className="w-5" /> delete Account
+              </button>
+            </div>
           </div>
         </div>
       </div>
+      {isDeleteAccountModal && (
+        <DeleteAccountModal
+          modalHandler={() => setIsDeleteAccountModal(false)}
+        />
+      )}
     </div>
   );
 }
