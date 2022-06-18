@@ -24,13 +24,6 @@ const status = [
   },
   {
     id: 3,
-    title: "Replied",
-    bgColor: "bg-purple-600",
-    count: 0,
-    svg: <ReplyIcon className="w-12 sm:w-16 opacity-50" />,
-  },
-  {
-    id: 4,
     title: "Closed",
     bgColor: "bg-red-800",
     count: 0,
@@ -40,7 +33,7 @@ const status = [
 
 function TicketStatus() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-5 mt-5">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-5">
       {status.map((item) => (
         <StatusItem key={item.id} {...item} />
       ))}
