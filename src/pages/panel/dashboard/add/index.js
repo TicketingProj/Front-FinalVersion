@@ -1,16 +1,112 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/dist/client/router";
+//redux
+import { useSelector } from "react-redux";
+//service
+import { PostTicket } from "../../../../services/ticket";
 //component
 import Layout from "../../../../components/page/panel/layout";
+import Selection from "../../../../components/common/selection";
 //svg
 import { UploadIcon } from "@heroicons/react/outline";
 import { ArrowLeftIcon } from "@heroicons/react/outline";
 
+const PriorityList = [
+  {
+    id: 1,
+    title: "Low",
+    value: "LO",
+  },
+  {
+    id: 2,
+    title: "Normal",
+    value: "NO",
+  },
+  {
+    id: 3,
+    title: "Heigh",
+    value: "HE",
+  },
+];
+
+const SelectionList = [
+  {
+    id: 1,
+    title: "Teachnical",
+    value: "TE",
+  },
+  {
+    id: 2,
+    title: "Finance",
+    value: "FI",
+  },
+  {
+    id: 3,
+    title: "Customer service ",
+    value: "CU",
+  },
+];
+
 function AddTicket() {
+  const { user } = useSelector((state) => state);
+
+  const [selectedPriority, setSelectedPriorityList] = useState({});
+  const [selectedSection, setSelectedSelection] = useState({});
+
+  const [dataSchema, setDataSchema] = useState({
+    title: "",
+    body: "",
+    parent: "",
+  });
+
+  useEffect(() => {
+    setDataSchema({
+      ...dataSchema,
+      id: user.id,
+      token: user.token,
+    });
+  }, [user]);
   const router = useRouter();
 
   const goBackHandler = () => {
     router.back();
+  };
+
+  const dataSchemaHandler = (key, value) => {
+    setDataSchema({
+      ...dataSchema,
+      [key]: value,
+    });
+  };
+
+  const handleSelctedPriority = (id) => {
+    setSelectedPriorityList(PriorityList.find((item) => item.id === id));
+  };
+
+  const handleSelectedSelection = (id) => {
+    setSelectedSelection(SelectionList.find((item) => item.id === id));
+  };
+
+  const submitDataHandler = async () => {
+    try {
+      const { title, body, id, token } = dataSchema;
+      console.log("userToken : ", token);
+      const response = await PostTicket(
+        {
+          title,
+          body,
+          id,
+          parent: 1,
+          pariority: selectedPriority.value,
+          section: selectedSection.value,
+          status: "OP",
+        },
+        token
+      );
+      console.log("response : ", response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -32,32 +128,44 @@ function AddTicket() {
           </button>
         </div>
         <div className="bg-white rounded-lg p-5 mt-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-5 w-full ">
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-x-5 w-full ">
             <div className="col-span-2 flex flex-col">
               <label>Subject:</label>
               <input
+                value={dataSchema.title}
+                onChange={(e) => {
+                  dataSchemaHandler("title", e.target.value);
+                }}
                 className="border rounded-md my-2 text-lg py-1 px-2 outline-none"
                 type={"text"}
               />
             </div>
             <div className="col-span-2 flex flex-col">
-              <label>Priority:</label>
-              <select
-                className="border rounded-md text-lg my-2 py-1.5 px-2 outline-none"
-                id="TF"
-                name="tarafdari"
-              >
-                <option value="Esteghlal">All</option>
-                <option value="Persepolis">Opened</option>
-                <option value="Persepolis">Answered</option>
-                <option value="Persepolis">Replied</option>
-                <option value="Persepolis">Close</option>
-              </select>
+              <span>Priority</span>
+              <Selection
+                options={PriorityList}
+                selectedOption={selectedPriority}
+                handleOption={handleSelctedPriority}
+              />
+            </div>
+            <div className="col-span-2 flex flex-col">
+              <span>Section:</span>
+              <Selection
+                handleOption={handleSelectedSelection}
+                options={SelectionList}
+                selectedOption={selectedSection}
+              />
             </div>
           </div>
           <div className="flex flex-col mb-5">
             <label>Message:</label>
-            <textarea className="border rounded-md py-1 px-2 min-h-[175px] outline-none" />
+            <textarea
+              value={dataSchema.body}
+              onChange={(e) => {
+                dataSchemaHandler("body", e.target.value);
+              }}
+              className="border rounded-md py-1 px-2 min-h-[175px] outline-none"
+            />
           </div>
           <div className="flex flex-col gap-y-2">
             <label>
@@ -76,7 +184,10 @@ function AddTicket() {
               </button>
             </div>
           </div>
-          <button className="bg-blue-700 hover:bg-blue-900 duration-200 text-white flex items-center gap-x-1 rounded-md px-4 py-2 mt-5">
+          <button
+            onClick={submitDataHandler}
+            className="bg-blue-700 hover:bg-blue-900 duration-200 text-white flex items-center gap-x-1 rounded-md px-4 py-2 mt-5"
+          >
             <UploadIcon className="w-5" />
             Send
           </button>
