@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 //SVG
 import { MenuIcon } from "@heroicons/react/solid";
@@ -7,10 +8,20 @@ import { XIcon } from "@heroicons/react/solid";
 import HeaderLogo from "../../../../public/assets/img/dark-logo.png";
 
 function Header() {
+  const router = useRouter();
+
   const [isShowNavbar, setIsShowNavbar] = useState(false);
 
   const onShowNavbarHandler = () => {
     setIsShowNavbar(!isShowNavbar);
+  };
+
+  const onSigninClickHandler = () => {
+    if (localStorage.getItem("token") !== null && localStorage.getItem("id")) {
+      router.push(`/panel/dashboard`);
+    } else {
+      router.push("/auth");
+    }
   };
 
   return (
@@ -25,11 +36,12 @@ function Header() {
         </a>
       </Link>
       <div className="hidden md:flex items-center">
-        <Link href={"/auth"}>
-          <a className="px-7 py-2 bg-blue-900 rounded-md text-lg  text-white hover:bg-white hover:text-blue-800 border border-blue-800 duration-300 relative left-2 ">
-            Sign In
-          </a>
-        </Link>
+        <button
+          onClick={onSigninClickHandler}
+          className="px-7 py-2 bg-blue-900 rounded-md text-lg  text-white hover:bg-white hover:text-blue-800 border border-blue-800 duration-300 relative left-2 "
+        >
+          Sign In
+        </button>
       </div>
       <button onClick={onShowNavbarHandler} className="block md:hidden">
         <MenuIcon className="w-7 h-7" />

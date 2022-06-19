@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import React, { useState } from "react";
 import Link from "next/dist/client/link";
 import { ToastContainer } from "react-toastify";
 //component
@@ -12,19 +11,11 @@ import SiteLogo from "./../../../public/assets/img/dark-logo.png";
 import "react-toastify/dist/ReactToastify.css";
 
 function Auth() {
-  const router = useRouter();
   const [varificateStatus, setVarificationStatus] = useState("getPhoneNumber");
 
   const onVarificationHandler = (target) => {
     setVarificationStatus(target);
   };
-
-  useEffect(() => {
-    //check localStorage to go to Dashboard if have localStorage
-    if (localStorage.getItem("token") !== null) {
-      router.push(`panel/dashboard`);
-    }
-  }, []);
 
   return (
     <>

@@ -1,12 +1,17 @@
 import React, { useRef, useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+//service
+import { GetSingleUser } from "../../../../services/account";
 //redux
 import { useDispatch, useSelector } from "react-redux";
+import { addAllData } from "../../../../slice/user";
+import { addOtp } from "../../../../slice/user";
 //services
 import { SmsVarificationOtp } from "../../../../services/account";
-import { addOtp } from "../../../../slice/user";
 
 function SmsVarification({ onVarificationHandler }) {
+  const router = useRouter();
   const inputRef = useRef();
 
   const dispatch = useDispatch();
@@ -100,8 +105,9 @@ function SmsVarification({ onVarificationHandler }) {
       if (response.status === 202) {
         //currect otp
         dispatch(addOtp({ ...response.data }));
-        onVarificationHandler("registerUser");
         toast.success("Sms varificate Successfully");
+        //check if user had login before
+        getUser(response.data.token, response.data.id);
       } else {
         toast.error("check your otp code");
       }
@@ -110,6 +116,27 @@ function SmsVarification({ onVarificationHandler }) {
       console.log(error);
     }
     setIsLoadingBtn(false);
+  };
+
+  const getUser = async (token, id) => {
+    try {
+      const response = await GetSingleUser(id, token);
+      if (response.status === 200) {
+        // check user have Register
+        if (response.data.fullName) {
+          dispatch(addAllData({ ...response.data }));
+          //set localStorage to login when user come to account
+          localStorage.setItem("token", `${token}`);
+          localStorage.setItem("id", `${id}`);
+          router.push(`/panel/dashboard`);
+        } else {
+          console.log("come here");
+          onVarificationHandler("registerUser");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

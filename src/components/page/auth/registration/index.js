@@ -1,15 +1,15 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import Link from "next/dist/client/link";
 import { useRouter } from "next/router";
 //redux
 import { useDispatch, useSelector } from "react-redux";
+import { addAllData } from "../../../../slice/user";
 //service
-import { GetSingleUser, RegisterUser } from "../../../../services/account";
+import { RegisterUser } from "../../../../services/account";
 //pic
 import DefaultUser from "./../../../../../public/assets/img/user.png";
 import IranIcon from "./../../../../../public/assets/img/icons8-iran-48 (1).png";
-import { addAllData } from "../../../../slice/user";
 
 function Registration() {
   const router = useRouter();
@@ -25,31 +25,9 @@ function Registration() {
 
   const [error, setError] = useState({});
 
-  useEffect(() => {
-    //get data to check if login before
-    getUser();
-  }, []);
-
   const setLocalStorage = () => {
     localStorage.setItem("token", `${user.token}`);
     localStorage.setItem("id", `${user.id}`);
-  };
-
-  const getUser = async () => {
-    try {
-      const response = await GetSingleUser(user.id, user.token);
-      if (response.status === 200) {
-        // check user have Register
-        if (response.data.fullName.trim().length > 0) {
-          dispatch(addAllData({ ...response.data }));
-          //set localStorage to login when user come to account
-          setLocalStorage();
-          router.push(`/panel/dashboard`);
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const schemaHandler = (e) => {

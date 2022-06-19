@@ -30,6 +30,7 @@ function Setting() {
   const [dataSchema, setDataSchema] = useState({
     Agreemet: false,
   });
+  const [error, setError] = useState({});
 
   useEffect(() => {
     setDataSchema({
@@ -61,7 +62,52 @@ function Setting() {
     }
   };
 
-  const onSubmitFileHandler = async () => {
+  const onSubmitFileHandler = () => {
+    //check values
+    let flagHaveError = false;
+
+    //claer errors list
+    setError({});
+
+    if (dataSchema.fullName.trim().length <= 0) {
+      setError((prevState) => ({
+        ...prevState,
+        fullName: "please enter fullname",
+      }));
+
+      flagHaveError = true;
+    }
+    if (
+      dataSchema.email.trim().length <= 0 ||
+      validateEmail(dataSchema.email) === null
+    ) {
+      if (validateEmail(dataSchema.email) === null) {
+        setError((prevState) => ({
+          ...prevState,
+          email: "please enter email correctly",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          email: "please enter email",
+        }));
+      }
+      flagHaveError = true;
+    }
+    if (!flagHaveError) {
+      onPostDataHandler();
+    }
+  };
+
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
+  const onPostDataHandler = async () => {
     setIsLoadingBtn(true);
     try {
       const { fullName, email, phoneNumber, id, token } = dataSchema;
@@ -147,30 +193,44 @@ function Setting() {
               Account Detail
             </span>
           </div>
-          <div className="px-3 sm:px-6 py-4 w-full flex flex-col gap-y-4 h-full">
+          <div className="px-3 sm:px-6 py-4 w-full flex flex-col gap-y-10 h-full">
             <div className="flex flex-col sm:flex-row gap-y-5 items-center gap-x-2">
-              <div className="flex flex-col w-full">
+              <div className="flex flex-col w-full relative">
                 <label className=" text-gray-500">Fullname</label>
                 <input
                   name="fullName"
                   onChange={schemaHandler}
                   value={dataSchema.fullName}
-                  className="border-2 border-gray-200 rounded-md outline-none px-3 py-2"
+                  className={`border-2 ${
+                    error.fullName ? "border-red-200" : "border-gray-200"
+                  } rounded-md outline-none px-3 py-2`}
                   type={"text"}
                 />
+                {error.fullName && (
+                  <span className="absolute top-[70px] text-sm text-red-600">
+                    {error.fullName}
+                  </span>
+                )}
               </div>
-              <div className="flex flex-col w-full">
+              <div className="flex flex-col w-full relative">
                 <label className="text-gray-500">Email</label>
                 <input
                   name="email"
                   onChange={schemaHandler}
                   value={dataSchema.email}
-                  className="border-2 border-gray-200 rounded-md outline-none px-3 py-2"
+                  className={`border-2 ${
+                    error.email ? "border-red-200" : "border-gray-200"
+                  } rounded-md outline-none px-3 py-2`}
                   type={"email"}
                 />
+                {error.email && (
+                  <span className="absolute top-[70px] text-sm text-red-600">
+                    {error.email}
+                  </span>
+                )}
               </div>
             </div>
-            <div className="flex flex-col w-fit ">
+            <div className="flex flex-col w-fit">
               <label className="text-gray-500">phone number</label>
               <div className="flex gap-x-2">
                 <div className="flex items-center justify-center gap-x-1 border-2 rounded-md px-3">
@@ -185,7 +245,7 @@ function Setting() {
                 />
               </div>
             </div>
-            <div className="w-full flex items-center flex-row-reverse justify-between mt-10">
+            <div className="self-end flex-grow w-full flex items-center flex-row-reverse justify-between mt-10">
               {isLoadingBtn ? (
                 <div
                   className={`w-[150px] py-2.5 rounded-md flex flex-row justify-center items-center bg-[#515BE0]`}

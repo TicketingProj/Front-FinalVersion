@@ -31,7 +31,7 @@ function Navbar({ navbarHandler }) {
           <XIcon className="w-5" />
         </button>
         <Link href={"/"}>
-          <a>
+          <a className="mb-10">
             <img className="px-6 py-5" src={FlowTicketImage.src} />
           </a>
         </Link>
