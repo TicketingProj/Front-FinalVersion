@@ -14,6 +14,7 @@ function Auth() {
   const [varificateStatus, setVarificationStatus] = useState("getPhoneNumber");
 
   const onVarificationHandler = (target) => {
+    console.log("this is target : ", target);
     setVarificationStatus(target);
   };
 

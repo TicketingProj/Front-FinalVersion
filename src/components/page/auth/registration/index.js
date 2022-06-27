@@ -17,7 +17,6 @@ function Registration() {
 
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state);
-
   const [isLoadingBtn, setIsLoadingBtn] = useState(false);
   const [dataSchema, setDataSchema] = useState({ ...user, Agreemet: false });
 
@@ -105,7 +104,6 @@ function Registration() {
     setIsLoadingBtn(true);
     try {
       const { fullName, email, phoneNumber, id, token } = dataSchema;
-
       const response = await RegisterUser({
         avatar: userProfile.raw,
         id,

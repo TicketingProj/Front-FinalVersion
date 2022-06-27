@@ -31,8 +31,8 @@ function Navbar({ navbarHandler }) {
           <XIcon className="w-5" />
         </button>
         <Link href={"/"}>
-          <a className="mb-10">
-            <img className="px-6 py-5" src={FlowTicketImage.src} />
+          <a className="mb-4">
+            <img className="px-6 pt-2.5" src={FlowTicketImage.src} />
           </a>
         </Link>
         <div className="flex flex-col gap-y-10 h-full">
