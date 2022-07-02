@@ -7,24 +7,33 @@ import UsePriority from "../../../../../helper/usePriority";
 //redux
 import { useSelector } from "react-redux";
 //service
+import { GetChildTikcet } from "../../../../../services/ticket";
+import { EditTicket } from "../../../../../services/ticket";
+import { PostTicket } from "../../../../../services/ticket";
 import { GetSingleTickets } from "../../../../../services/ticket";
 //component
+import TicketMessage from "../../../../../components/page/panel/dashboard/singleTicket/message";
 import Layout from "../../../../../components/page/panel/layout";
 //svg
 import { ArrowLeftIcon } from "@heroicons/react/outline";
 import { UploadIcon } from "@heroicons/react/outline";
-//pic
-import defaulUser from "./../../../../../../public/assets/img/user.png";
-import inbox from "./../../../../../../public/assets/img/inbox.png";
 
 function SingleTicket() {
   const router = useRouter();
+
+  const [dataSchema, setDataSchema] = useState({
+    title: "",
+    body: "",
+  });
 
   const [loading, setLoading] = useState(true);
 
   const [ticket, setTicket] = useState({
     ticket: "",
   });
+
+  const [replyTicket, setReplyTicket] = useState({});
+  const [replyLoadingBtn, setReplyLoadingBtn] = useState(false);
   const { user } = useSelector((state) => state);
   const { id } = router.query;
 
@@ -33,12 +42,26 @@ function SingleTicket() {
       getTicket();
     }
   }, [id]);
+
+  const dataSchemaHandler = (key, value) => {
+    setDataSchema({
+      ...dataSchema,
+      [key]: value,
+    });
+  };
+
   const getTicket = async () => {
     setLoading(true);
     try {
       const response = await GetSingleTickets(user.token, id);
       if (response.status === 202) {
         setTicket(response.data);
+        if (response.data.ticket.parent !== null) {
+          getChildTicket(response.data.ticket.parent);
+        }
+        if (user.isSavior === true && response.data.ticket.status === "OP") {
+          setTicketInProgress(response.data.ticket);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -46,8 +69,77 @@ function SingleTicket() {
     setLoading(false);
   };
 
+  const getChildTicket = async (_id) => {
+    try {
+      const response = await GetSingleTickets(user.token, _id);
+      setReplyTicket({ ...response.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const setTicketInProgress = async (_ticket) => {
+    try {
+      const response = await EditTicket(
+        {
+          ticketId: _ticket.id,
+          ..._ticket,
+          status: "PR",
+          id: user.id,
+          // parent: 1,
+        },
+        user.token
+      );
+      getTicket();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const postAnswer = async () => {
+    setReplyLoadingBtn(true);
+    try {
+      const response = await PostTicket(
+        {
+          title: dataSchema.title,
+          body: dataSchema.body,
+          id: user.id,
+          pariority: "NO",
+          section: "TE",
+          status: "OP",
+        },
+        user.token
+      );
+      if (response.status === 200) {
+        await addAnswerToTicket(response.data.id);
+      }
+      // console.log("response : ", response);
+    } catch (error) {
+      console.log(error);
+    }
+    setReplyLoadingBtn(false);
+  };
+
   const goBackHandler = () => {
     router.back();
+  };
+
+  const addAnswerToTicket = async (ticketId) => {
+    try {
+      const response = await EditTicket(
+        {
+          ticketId: ticket.ticket.id,
+          ...ticket.ticket,
+          status: "CL",
+          parent: ticketId,
+          id: user.id,
+        },
+        user.token
+      );
+      getTicket();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -103,7 +195,7 @@ function SingleTicket() {
                     ? "bg-blue-600"
                     : ticket.ticket.status === "CL"
                     ? "bg-red-600"
-                    : ""
+                    : "bg-yellow-600"
                 } text-sm sm:text-base p-2 text-white mx-1 rounded-md`}
               >
                 {UseStatus(ticket.ticket.status)}
@@ -111,46 +203,23 @@ function SingleTicket() {
             </div>
           </div>
           <div className="bg-[#F8F9FA] py-2">
-            <div className="flex items-start gap-x-2 m-2.5 sm:m-5 p-1 sm:p-5">
-              <img
-                className="w-8 h-8 sm:w-14 sm:h-14 rounded-full"
-                src={user.avatar ? user.avatar : defaulUser.src}
+            <TicketMessage
+              isReplay={false}
+              user={ticket.ticket.user}
+              files={ticket.files}
+              createdAt={ticket.ticket.createdAt}
+              message={ticket.ticket.body}
+            />
+            {replyTicket && replyTicket.ticket && (
+              <TicketMessage
+                isReplay={true}
+                user={replyTicket.ticket.user}
+                files={replyTicket.files}
+                createdAt={replyTicket.ticket.createdAt}
+                message={replyTicket.ticket.body}
               />
-              <div className="flex-grow flex flex-col gap-y-2">
-                <div className="rounded-tl-3xl rounded-md bg-white shadow-sm p-4">
-                  <div className="w-full flex items-center justify-between pb-2 border-b">
-                    <span className="text-base sm:text-lg font-semibold">
-                      {user.fullName}
-                    </span>
-                    <span className="text-[10px] sm:text-xs text-gray-500">
-                      {moment(ticket.ticket.createdAt).format(
-                        "YYYY/MM/DD  hh:mm"
-                      )}
-                    </span>
-                  </div>
-                  <p className="text-sm sm:text-base py-2">
-                    {ticket.ticket.body}
-                  </p>
-                </div>
-                {ticket.files && ticket.files.length > 0 ? (
-                  <div className="rounded-md bg-white shadow-sm p-4">
-                    <a
-                      target={"_blank"}
-                      download
-                      href={`http://optivas.ir${ticket.files[0].file}`}
-                      className="flex items-center gap-x-2 group"
-                    >
-                      <img className="w-8" src={`${inbox.src}`} />
-                      <span className="group-hover:text-blue-500 duration-200">
-                        Uploaded file
-                      </span>
-                    </a>
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-            </div>
+            )}
+
             <span className="text-xs text-gray-500 m-5">
               last update{" "}
               {moment(ticket.ticket.updatedAt).format("YYYY/MM/DD  hh:mm")}
@@ -159,33 +228,52 @@ function SingleTicket() {
         </div>
 
         {/* this is admin */}
-        {/* <div className="bg-white rounded-lg p-5 mt-8">
-          <div className="flex flex-col gap-y-1 mb-5">
-            <label>Replay Message:</label>
-            <textarea className="border rounded-md py-1 px-2 min-h-[175px] outline-none" />
-          </div>
-          <div className="flex flex-col gap-y-2">
-            <label>
-              Files : (<span className="font-semibold">Supported types</span> :
-              JPG, JPEG, PNG, PDF)
-            </label>
-            <div className="flex items-center justify-between h-[45px]">
-              <div className="h-full flex-grow flex items-center border rounded-l-md">
-                <button className="h-full px-2 border-r bg-[#F5F7FA]">
-                  Choose File
-                </button>
-                <span className="px-2">No File Chosen</span>
-              </div>
-              <button className="w-fit h-full px-4 text-3xl border border-[#212529] hover:bg-white hover:text-[#212529] duration-200 bg-[#212529] text-white rounded-r-md">
-                +
-              </button>
+        {user.isSavior && ticket.ticket.status !== "CL" && (
+          <div className="bg-white rounded-lg p-5 mt-8">
+            <div className="col-span-2 flex flex-col">
+              <label>Subject:</label>
+              <input
+                placeholder="Enter title ... "
+                value={dataSchema.title}
+                onChange={(e) => {
+                  dataSchemaHandler("title", e.target.value);
+                }}
+                className="border rounded-md my-2 text-lg py-1 px-2 outline-none"
+                type={"text"}
+              />
             </div>
+            <div className="flex flex-col gap-y-1 mb-5">
+              <label>Replay Message:</label>
+              <textarea
+                placeholder="Enter your message ..."
+                value={dataSchema.body}
+                onChange={(e) => {
+                  dataSchemaHandler("body", e.target.value);
+                }}
+                className="border rounded-md py-1 px-2 min-h-[175px] outline-none"
+              />
+            </div>
+
+            {replyLoadingBtn ? (
+              <div
+                className={`w-[120px] h-[45px] flex flex-row justify-center items-center bg-[#515BE0] rounded-[10px] mt-5`}
+              >
+                <div
+                  style={{ borderTopColor: "transparent" }}
+                  className="w-6 h-6 border-2 border-white border-solid rounded-full animate-spin"
+                ></div>
+              </div>
+            ) : (
+              <button
+                onClick={postAnswer}
+                className="bg-blue-700 hover:bg-blue-900 duration-200 text-white flex items-center justify-center gap-x-1 rounded-md w-[120px] h-[45px] mt-5"
+              >
+                <UploadIcon className="w-5" />
+                Send
+              </button>
+            )}
           </div>
-          <button className="bg-blue-700 hover:bg-blue-900 duration-200 text-white flex items-center gap-x-1 rounded-md px-4 py-2 mt-5">
-            <UploadIcon className="w-5" />
-            Send
-          </button>
-        </div> */}
+        )}
       </div>
     </Layout>
   );

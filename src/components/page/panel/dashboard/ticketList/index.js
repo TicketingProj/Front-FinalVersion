@@ -36,6 +36,9 @@ function TicketList({ getListOfTicket, tickets }) {
   };
 
   const fileModalHandler = (id) => {
+    setFileModalSchema({
+      isOpen: true,
+    });
     //get ticket to check have file
     getTikcet(id);
   };

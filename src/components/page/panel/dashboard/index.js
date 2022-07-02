@@ -12,58 +12,26 @@ import TicketList from "./ticketList";
 //SVG
 import { PlusIcon } from "@heroicons/react/solid";
 
-const TicketStatusList = [
-  {
-    id: 1,
-    title: "All",
-    value: "All",
-  },
-  {
-    id: 2,
-    title: "Open",
-    value: "OP",
-  },
-  {
-    id: 3,
-    title: "Inprogress",
-    value: "IN",
-  },
-  {
-    id: 4,
-    title: "Close",
-    value: "Cl",
-  },
-];
-
 function Dashboard() {
-  const [selectedStatus, setSelectedStatus] = useState({
-    id: 1,
-    title: "All",
-    value: "All",
-  });
   const [tickets, setTickets] = useState([]);
   const [isLoadingTicket, setIsLoadingTicket] = useState(true);
   const { user } = useSelector((state) => state);
 
   useEffect(() => {
-    getListOfTicket();
-  }, []);
+    if (user.token) getListOfTicket();
+  }, [user]);
 
-  const getListOfTicket = async () => {
+  const getListOfTicket = async (filter) => {
     setIsLoadingTicket(true);
     try {
-      const response = await GetTicketsList(user.token);
-      if (response.status === 202) {
-        setTickets(response.data);
+      const response = await GetTicketsList(user.token, filter);
+      if (response.status === 200) {
+        setTickets(response.data.results);
       }
     } catch (error) {
       console.log(error);
     }
     setIsLoadingTicket(false);
-  };
-
-  const selectedStatusHandler = (id) => {
-    setSelectedStatus(TicketStatusList.find((item) => item.id === id));
   };
 
   return (
@@ -76,24 +44,21 @@ function Dashboard() {
           </p>
         </div>
         <div className="flex flex-col sm:flex-row-reverse items-start sm:items-center  gap-x-2.5">
-          <div className="w-52">
-            <Selection
-              handleOption={selectedStatusHandler}
-              options={TicketStatusList}
-              selectedOption={selectedStatus}
-            />
-          </div>
-          <Link href={"/panel/dashboard/add"}>
-            <div className="hover:w-[135px] w-[45px] duration-200 cursor-pointer overflow-hidden flex items-center flex-nowrap py-2 px-3.5 gap-x-2.5 rounded-md bg-blue-700">
-              <a className="text-white">
-                <PlusIcon className="w-5" />
-              </a>
-              <span className="text-white whitespace-nowrap">new ticket</span>
-            </div>
-          </Link>
+          {!user.isSavior ? (
+            <Link href={"/panel/dashboard/add"}>
+              <div className="hover:w-[135px] w-[45px] duration-200 cursor-pointer overflow-hidden flex items-center flex-nowrap py-2 px-3.5 gap-x-2.5 rounded-md bg-blue-700">
+                <a className="text-white">
+                  <PlusIcon className="w-5" />
+                </a>
+                <span className="text-white whitespace-nowrap">new ticket</span>
+              </div>
+            </Link>
+          ) : (
+            <span className="text-xl font-semibold ">Admin Panel</span>
+          )}
         </div>
       </div>
-      <TicketStatus />
+      <TicketStatus getList={getListOfTicket} />
       {isLoadingTicket ? (
         <div class="min-w-[800px] w-full shadow-md rounded-md bg-white">
           <div

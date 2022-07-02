@@ -21,7 +21,7 @@ function FileModal({ prevFile, isSearching, modalHandler, isLoadingBtn }) {
         raw: e.target.files[0],
       });
     } else {
-      console.log("error add file");
+      // console.log("error add file");
     }
   };
 
@@ -53,10 +53,13 @@ function FileModal({ prevFile, isSearching, modalHandler, isLoadingBtn }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white w-3/4 p-9 rounded-md space-y-10 mx-5"
+        className="bg-white w-11/12 md:w-3/4 p-9 rounded-md space-y-10 mx-5"
       >
         {isSearching ? (
-          <span>searching</span>
+          <div
+            style={{ borderTopColor: "transparent" }}
+            className="mx-auto w-10 h-10 border-2 border-black border-solid rounded-full animate-spin"
+          ></div>
         ) : prevFile.length > 0 ? (
           <>
             <span className="text-xl font-semibold text-gray-700">

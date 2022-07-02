@@ -52,7 +52,12 @@ function Layout({ children }) {
         <Navbar navbarHandler={navbarHandler} />
       </div>
       <div className="col-span-12 lg:col-span-9 xl:col-span-10 flex flex-col">
-        <Header avatar={user.avatar} navbarHandler={navbarHandler} />
+        <Header
+          isSavior={user.isSavior}
+          name={user.fullName}
+          avatar={user.avatar}
+          navbarHandler={navbarHandler}
+        />
         {children}
       </div>
     </div>

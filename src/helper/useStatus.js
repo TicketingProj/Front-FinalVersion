@@ -3,8 +3,9 @@ function UseStatus(status) {
     return "OPEN";
   } else if (status === "CL") {
     return "ClOSE";
+  } else {
+    return "InProgress";
   }
-  //need another status
 }
 
 export default UseStatus;

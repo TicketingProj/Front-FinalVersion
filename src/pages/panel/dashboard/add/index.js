@@ -47,6 +47,7 @@ function AddTicket() {
 
   const [selectedPriority, setSelectedPriorityList] = useState({});
   const [selectedSection, setSelectedSelection] = useState({});
+
   const [isLoading, setIsLoading] = useState(false);
   const [dataSchema, setDataSchema] = useState({
     title: "",
@@ -130,6 +131,7 @@ function AddTicket() {
             <div className="col-span-2 flex flex-col">
               <label>Subject:</label>
               <input
+                placeholder="Enter title ... "
                 value={dataSchema.title}
                 onChange={(e) => {
                   dataSchemaHandler("title", e.target.value);
@@ -158,6 +160,7 @@ function AddTicket() {
           <div className="flex flex-col mb-5">
             <label>Message:</label>
             <textarea
+              placeholder="Enter your message ..."
               value={dataSchema.body}
               onChange={(e) => {
                 dataSchemaHandler("body", e.target.value);

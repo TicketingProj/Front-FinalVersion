@@ -131,7 +131,6 @@ function SmsVarification({ onVarificationHandler }) {
           localStorage.setItem("id", `${id}`);
           router.push(`/panel/dashboard`);
         } else {
-          console.log("come here");
         }
       }
     } catch (error) {
@@ -202,13 +201,18 @@ function SmsVarification({ onVarificationHandler }) {
             ></div>
           </div>
         )}
-        <div className="flex items-center flex-row-reverse gap-x-5">
-          <button
+        <div className="flex items-center flex-row-reverse gap-x-5 justify-center">
+          <div
             onClick={onGetPhoneNumberHandler}
-            className="after:block after:w-0 after:h-0.5 after:hover:w-full after:duration-200 after:rounded-full after:bg-blue-900 text-sm text-red-600 mt-2 self-end mb-2 "
+            className="cursor-pointer group flex items-center gap-x-2 relative "
           >
-            wrong number ?
-          </button>
+            <div className="text-sm text-gray-600 mt-2 self-end mb-2 ">
+              wrong number ?
+            </div>
+            <span className="absolute text-sm font-medium opacity-0 top-7 group-hover:opacity-100 duration-200 bg-black bg-opacity-70 text-white p-2 rounded-lg rounded-bl-3xl">
+              phoneNumber {`0${user.phoneNumber}`}
+            </span>
+          </div>
           <div className="cursor-default text-sm">
             <span className="font-semibold">expires on : </span>
             <span className="text-[#515151] text-xs font-semibold">

@@ -7,11 +7,9 @@ import FlowTicketIcon from "./../../../../../../public/assets/ico/favicon.ico";
 //pic
 import defaultImage from "./../../../../../../public/assets/img/user.png";
 //SVG
-import { BellIcon } from "@heroicons/react/outline";
 import { MenuIcon } from "@heroicons/react/outline";
-import { SearchIcon } from "@heroicons/react/outline";
 
-function Header({ avatar, navbarHandler }) {
+function Header({ isSavior, name, avatar, navbarHandler }) {
   const [isOpenSearchField, setIsOpenSearchFeild] = useState(false);
 
   return (
@@ -29,17 +27,12 @@ function Header({ avatar, navbarHandler }) {
                 src={avatar ? avatar : defaultImage.src}
               />
             </button>
-            <button className="w-6">
-              <BellIcon />
-            </button>
-            <button
-              onClick={() => {
-                setIsOpenSearchFeild((prevState) => !prevState);
-              }}
-              className="w-6  lg:hidden block"
-            >
-              <SearchIcon />
-            </button>
+            <div>
+              <span className="font-semibold">{name}</span>
+              {isSavior && (
+                <span className="text-sm text-gray-500"> (admin) </span>
+              )}
+            </div>
           </div>
           <div className="flex items-center">
             <button
@@ -55,10 +48,6 @@ function Header({ avatar, navbarHandler }) {
             </Link>
           </div>
         </div>
-        <input
-          className="bg-[#f5f4f4] w-full lg:w-3/4 py-1.5 px-2 rounded-lg outline-none text-gray-600"
-          placeholder="Type to search..."
-        />
       </div>
     </div>
   );

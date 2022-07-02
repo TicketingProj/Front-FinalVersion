@@ -44,7 +44,6 @@ function GetPhoneNumber({ onVarificationHandler }) {
         onVarificationHandler("getSmsCode");
       }
     } catch (error) {
-      console.log("come here");
       console.log(error);
     }
     setIsLoadingBtn(false);
