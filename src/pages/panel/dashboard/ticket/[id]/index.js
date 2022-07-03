@@ -71,9 +71,11 @@ function SingleTicket() {
   };
 
   const getChildTicket = async () => {
+    //get child ticket
     try {
-      //get child ticket
-      const response = await GetChildTikcet(user.token, id);
+      //get token directly
+      const _token = localStorage.getItem("token");
+      const response = await GetChildTikcet(_token, id);
       setReplyTicket({ ...response.data });
     } catch (error) {
       console.log(error);
