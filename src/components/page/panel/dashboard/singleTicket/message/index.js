@@ -13,7 +13,7 @@ function TicketMessage({ isReplay, user, files, message, createdAt }) {
       } gap-x-2 m-2.5 sm:m-5 p-1 sm:p-5`}
     >
       <img
-        className="w-8 h-8 sm:w-14 sm:h-14 rounded-full"
+        className="w-8 h-8 sm:w-14 sm:h-14 rounded-full object-cover"
         src={
           user && user.avatar
             ? `http://optivas.ir${user.avatar}`

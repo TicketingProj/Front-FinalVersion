@@ -108,7 +108,6 @@ function SmsVarification({ onVarificationHandler }) {
         toast.success("Sms varificate Successfully");
         //check if user had login before
         getUser(response.data.token, response.data.id);
-        onVarificationHandler("registerUser");
       } else {
         toast.error("check your otp code");
       }
@@ -131,6 +130,7 @@ function SmsVarification({ onVarificationHandler }) {
           localStorage.setItem("id", `${id}`);
           router.push(`/panel/dashboard`);
         } else {
+          onVarificationHandler("registerUser");
         }
       }
     } catch (error) {

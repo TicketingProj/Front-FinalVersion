@@ -20,7 +20,7 @@ function Auth() {
   return (
     <>
       <div className="h-screen flex flex-col items-center justify-between w-full">
-        <div className="px-5 py-4 border-b  w-full">
+        <div className="px-5 py-4 border-b w-full">
           <Link href="/">
             <a className="w-fit">
               <img className="w-48 sm:w-60 h-10" src={SiteLogo.src} />

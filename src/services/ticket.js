@@ -3,10 +3,11 @@ import axios from "axios";
 const endPoint = "http://optivas.ir/";
 
 export async function PostTicket(
-  { title, body, id, pariority, section, status },
+  { title, body, id, pariority, section, status, parent },
   token
 ) {
   const formData = new FormData();
+  if (parent) formData.append("parent", parent);
   formData.append("title", title);
   formData.append("body", body);
   formData.append("user", id);
@@ -66,6 +67,36 @@ export async function GetSingleTickets(token, id) {
   const response = await axios.get(`${endPoint}/tickets/${id}/`, {
     headers: {
       Authorization: `${token}`,
+    },
+  });
+  return response;
+}
+
+export async function GetAllTicket(token, filter) {
+  let _filter = "";
+
+  if (filter !== undefined) {
+    _filter = filter;
+  }
+
+  const response = await axios.get(`${endPoint}/all/${_filter}`, {
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  });
+  return response;
+}
+
+export async function GetMyTicket(token, filter) {
+  let _filter = "";
+
+  if (filter !== undefined) {
+    _filter = filter;
+  }
+
+  const response = await axios.get(`${endPoint}/my_tickets/${_filter}`, {
+    headers: {
+      Authorization: `Token ${token}`,
     },
   });
   return response;

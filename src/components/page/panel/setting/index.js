@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 //component
 import DeleteAccountModal from "./deleteAccountModal";
 //services
@@ -125,9 +126,7 @@ function Setting() {
         token,
       });
       if (response.status === 200) {
-        // toast.success("data add successfully");
-        // setLocalStorage();
-        // dispatch(addAllData({ ...dataSchema }));
+        toast.success("data edit successfully");
         router.reload();
       }
     } catch (error) {

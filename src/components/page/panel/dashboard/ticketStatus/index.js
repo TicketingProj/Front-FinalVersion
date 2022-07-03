@@ -168,7 +168,7 @@ function TicketStatus({ getList }) {
             type={"text"}
           />
         </div>
-        <div className="flex items-center bg-white w-fit rounded-lg">
+        <div className="flex items-center bg-white w-fit rounded-lg my-3">
           <button
             onClick={() => {
               setSearchFeild("title");

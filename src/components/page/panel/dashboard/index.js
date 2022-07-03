@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/dist/client/link";
 //service
-import { GetTicketsList } from "../../../../services/ticket";
+import { GetMyTicket } from "../../../../services/ticket";
+import { GetAllTicket } from "../../../../services/ticket";
 //redux
 import { useSelector } from "react-redux";
 //component
-import Selection from "../../../common/selection";
 import EmptyList from "./emptyList";
 import TicketStatus from "./ticketStatus";
 import TicketList from "./ticketList";
@@ -24,9 +24,16 @@ function Dashboard() {
   const getListOfTicket = async (filter) => {
     setIsLoadingTicket(true);
     try {
-      const response = await GetTicketsList(user.token, filter);
-      if (response.status === 200) {
-        setTickets(response.data.results);
+      if (user.isSavior) {
+        const response = await GetAllTicket(user.token, filter);
+        if (response.status === 200) {
+          setTickets(response.data.results);
+        }
+      } else {
+        const response = await GetMyTicket(user.token, filter);
+        if (response.status === 200) {
+          setTickets(response.data.results);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -46,7 +53,7 @@ function Dashboard() {
         <div className="flex flex-col sm:flex-row-reverse items-start sm:items-center  gap-x-2.5">
           {!user.isSavior ? (
             <Link href={"/panel/dashboard/add"}>
-              <div className="hover:w-[135px] w-[45px] duration-200 cursor-pointer overflow-hidden flex items-center flex-nowrap py-2 px-3.5 gap-x-2.5 rounded-md bg-blue-700">
+              <div className="my-3 hover:w-[135px] w-[45px] duration-200 cursor-pointer overflow-hidden flex items-center flex-nowrap py-2 px-3.5 gap-x-2.5 rounded-md bg-blue-700">
                 <a className="text-white">
                   <PlusIcon className="w-5" />
                 </a>
@@ -60,7 +67,7 @@ function Dashboard() {
       </div>
       <TicketStatus getList={getListOfTicket} />
       {isLoadingTicket ? (
-        <div class="min-w-[800px] w-full shadow-md rounded-md bg-white">
+        <div className="min-w-[800px] w-full shadow-md rounded-md bg-white">
           <div
             className={`py-10 mt-5 rounded-md flex flex-row justify-center items-center `}
           >

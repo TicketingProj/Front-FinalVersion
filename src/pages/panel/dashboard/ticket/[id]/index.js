@@ -20,11 +20,14 @@ import { UploadIcon } from "@heroicons/react/outline";
 
 function SingleTicket() {
   const router = useRouter();
+  const { user } = useSelector((state) => state);
+  const { id } = router.query;
 
   const [dataSchema, setDataSchema] = useState({
     title: "",
     body: "",
   });
+  const [error, setError] = useState({});
 
   const [loading, setLoading] = useState(true);
 
@@ -34,8 +37,6 @@ function SingleTicket() {
 
   const [replyTicket, setReplyTicket] = useState({});
   const [replyLoadingBtn, setReplyLoadingBtn] = useState(false);
-  const { user } = useSelector((state) => state);
-  const { id } = router.query;
 
   useEffect(() => {
     if (id) {
@@ -56,9 +57,9 @@ function SingleTicket() {
       const response = await GetSingleTickets(user.token, id);
       if (response.status === 202) {
         setTicket(response.data);
-        if (response.data.ticket.parent !== null) {
-          getChildTicket(response.data.ticket.parent);
-        }
+        getChildTicket();
+
+        //if status === open , admin open it change to InProgress
         if (user.isSavior === true && response.data.ticket.status === "OP") {
           setTicketInProgress(response.data.ticket);
         }
@@ -69,9 +70,10 @@ function SingleTicket() {
     setLoading(false);
   };
 
-  const getChildTicket = async (_id) => {
+  const getChildTicket = async () => {
     try {
-      const response = await GetSingleTickets(user.token, _id);
+      //get child ticket
+      const response = await GetChildTikcet(user.token, id);
       setReplyTicket({ ...response.data });
     } catch (error) {
       console.log(error);
@@ -86,10 +88,11 @@ function SingleTicket() {
           ..._ticket,
           status: "PR",
           id: user.id,
-          // parent: 1,
         },
         user.token
       );
+
+      //change data , get ticket agian
       getTicket();
     } catch (error) {
       console.log(error);
@@ -97,7 +100,26 @@ function SingleTicket() {
   };
 
   const postAnswer = async () => {
+    //validation inputs
+    if (dataSchema.body.trim().length === 0) {
+      setError({
+        ...error,
+        body: "Enter message please",
+      });
+      return;
+    }
+
+    if (dataSchema.title.trim().length === 0) {
+      setError({
+        ...error,
+        title: "Enter title please",
+      });
+      return;
+    }
+    setError({});
+
     setReplyLoadingBtn(true);
+
     try {
       const response = await PostTicket(
         {
@@ -107,13 +129,13 @@ function SingleTicket() {
           pariority: "NO",
           section: "TE",
           status: "OP",
+          parent: id,
         },
         user.token
       );
       if (response.status === 200) {
-        await addAnswerToTicket(response.data.id);
+        await addAnswerToTicket();
       }
-      // console.log("response : ", response);
     } catch (error) {
       console.log(error);
     }
@@ -124,14 +146,13 @@ function SingleTicket() {
     router.back();
   };
 
-  const addAnswerToTicket = async (ticketId) => {
+  const addAnswerToTicket = async () => {
     try {
       const response = await EditTicket(
         {
           ticketId: ticket.ticket.id,
           ...ticket.ticket,
           status: "CL",
-          parent: ticketId,
           id: user.id,
         },
         user.token
@@ -203,6 +224,9 @@ function SingleTicket() {
             </div>
           </div>
           <div className="bg-[#F8F9FA] py-2">
+            <span className="text-sm p-1.5 text-white bg-gray-900 ml-4 mt-3 rounded-md">
+              {ticket.ticket.section === "FI" ? "Finance" : "Teachnical"}
+            </span>
             <TicketMessage
               isReplay={false}
               user={ticket.ticket.user}
@@ -210,15 +234,17 @@ function SingleTicket() {
               createdAt={ticket.ticket.createdAt}
               message={ticket.ticket.body}
             />
-            {replyTicket && replyTicket.ticket && (
-              <TicketMessage
-                isReplay={true}
-                user={replyTicket.ticket.user}
-                files={replyTicket.files}
-                createdAt={replyTicket.ticket.createdAt}
-                message={replyTicket.ticket.body}
-              />
-            )}
+            {replyTicket &&
+              replyTicket.objects &&
+              replyTicket.objects.length > 0 && (
+                <TicketMessage
+                  isReplay={true}
+                  user={replyTicket.objects[0].user}
+                  files={replyTicket.files}
+                  createdAt={replyTicket.objects[0].createdAt}
+                  message={replyTicket.objects[0].body}
+                />
+              )}
 
             <span className="text-xs text-gray-500 m-5">
               last update{" "}
@@ -238,9 +264,12 @@ function SingleTicket() {
                 onChange={(e) => {
                   dataSchemaHandler("title", e.target.value);
                 }}
-                className="border rounded-md my-2 text-lg py-1 px-2 outline-none"
+                className="border rounded-md my-1 text-lg py-1 px-2 outline-none"
                 type={"text"}
               />
+              <span className="text-sm text-red-500">
+                {error.title && error.title}
+              </span>
             </div>
             <div className="flex flex-col gap-y-1 mb-5">
               <label>Replay Message:</label>
@@ -252,6 +281,9 @@ function SingleTicket() {
                 }}
                 className="border rounded-md py-1 px-2 min-h-[175px] outline-none"
               />
+              <span className="text-sm text-red-500">
+                {error.body && error.body}
+              </span>
             </div>
 
             {replyLoadingBtn ? (
