@@ -32,7 +32,7 @@ function Dashboard() {
       } else {
         const response = await GetMyTicket(user.token, filter);
         if (response.status === 200) {
-          setTickets(response.data);
+          setTickets(response.data.results);
         }
       }
     } catch (error) {
